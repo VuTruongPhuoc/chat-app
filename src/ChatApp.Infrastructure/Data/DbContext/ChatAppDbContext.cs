@@ -1,0 +1,35 @@
+using System.Reflection;
+using ChatApp.Domain.Entities;
+using ChatApp.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+namespace ChatApp.Infrastructure.DbContext;
+
+public class ChatAppDbContext : IdentityDbContext<Users, Roles, Guid>
+{
+    #region Ctors
+
+    public ChatAppDbContext(DbContextOptions<ChatAppDbContext> options) : base(options) { }
+
+    #endregion
+
+    #region DbSets
+
+    public DbSet<CallParticipants> CallParticipants { get; set; }
+    public DbSet<CallSessions> CallSessions { get; set; }
+    public DbSet<MessageFiles> MessageFiles { get; set; }
+    public DbSet<Messages> Messages { get; set; }
+    public DbSet<Rooms> Rooms { get; set; }
+    public DbSet<RoomMembers> RoomMembers { get; set; }
+    public DbSet<Reactions> Reactions { get; set; }
+    public DbSet<Notifications> Notifications { get; set; }
+
+    #endregion
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+}
