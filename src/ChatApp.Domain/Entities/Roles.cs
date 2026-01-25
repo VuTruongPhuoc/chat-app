@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace ChatApp.Infrastructure.Identity;
+namespace ChatApp.Domain.Entities;
 
 public class Roles : IdentityRole<Guid>
 {

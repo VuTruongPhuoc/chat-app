@@ -1,4 +1,4 @@
-public sealed class ConversationsApiRoutes
+public sealed class ConversationsRoutes
 {
     
 }

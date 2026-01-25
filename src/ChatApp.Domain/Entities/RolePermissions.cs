@@ -1,6 +1,6 @@
 using ChatApp.Domain.Common;
 
-namespace ChatApp.Infrastructure.Identity;
+namespace ChatApp.Domain.Entities;
 
 public class RolePermissions : BaseEntity
 {
