@@ -1,15 +1,14 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using ChatApp.Domain.Common;
 
 namespace ChatApp.Domain.Entities;
 
 [Table("Notifications")]
-public class Notifications : BaseEntity
+public class Notifications : Entity<Guid>
 {
     /// <summary>
     /// Id người dùng
     /// </summary>
-    public long UserId { get; set; }
+    public Guid UserId { get; set; }
 
     /// <summary>
     /// Nội dung thông báo

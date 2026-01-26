@@ -8,8 +8,10 @@
   <ItemGroup>
     <ProjectReference Include="..\ChatApp.Domain\ChatApp.Domain.csproj" />
     <ProjectReference Include="..\ChatApp.Shared\BuildingBlocks\BuildingBlocks.csproj" />
+    <ProjectReference Include="..\ChatApp.Shared\Common\Common.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="9.0.0" />
     <PackageReference Include="MediatR" Version="14.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.0" />

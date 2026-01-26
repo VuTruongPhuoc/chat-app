@@ -1,20 +1,19 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using ChatApp.Domain.Common;
 
 namespace ChatApp.Domain.Entities;
 
 [Table("Reactions")]
-public class Reactions : BaseEntity
+public class Reactions : Entity<Guid>
 {
     /// <summary>
     /// Id tin nhắn
     /// </summary>
-    public long MessageId { get; set; }
+    public Guid MessageId { get; set; }
 
     /// <summary>
     /// Id người dùng
     /// </summary>
-    public long UserId { get; set; }
+    public Guid UserId { get; set; }
 
     /// <summary>
     /// Cảm xúc

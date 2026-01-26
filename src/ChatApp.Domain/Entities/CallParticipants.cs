@@ -1,11 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ChatApp.Domain.Common;
 
 namespace ChatApp.Domain.Entities;
 
 [Table("CallParticipants")]
-public class CallParticipants : BaseEntity
+public class CallParticipants : EntityId<Guid>
 {
     /// <summary>
     /// Id của người dùng

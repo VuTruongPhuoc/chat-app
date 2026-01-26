@@ -1,21 +1,20 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using ChatApp.Domain.Common;
 using ChatApp.Domain.Enums;
 
 namespace ChatApp.Domain.Entities;
 
 [Table("Messages")]
-public class Messages : BaseEntity
+public class Messages : Entity<Guid>
 {
     /// <summary>
     /// The user who sent the message.        
     /// </summary>           
-    public long UserId { get; set; }
+    public Guid UserId { get; set; }
 
     /// <summary>
     /// The room where the message was sent.
     /// </summary>
-    public long RoomId { get; set; }
+    public Guid RoomId { get; set; }
 
     /// <summary>
     /// Content of the message.
@@ -30,7 +29,7 @@ public class Messages : BaseEntity
     /// <summary>
     /// The message is replied
     /// </summary>
-    public long? ReplyToId { get; set; }
+    public Guid? ReplyToId { get; set; }
 
     /// <summary>
     /// The message edited

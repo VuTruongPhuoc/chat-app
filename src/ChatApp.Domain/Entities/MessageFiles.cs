@@ -1,16 +1,14 @@
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ChatApp.Domain.Common;
 
 namespace ChatApp.Domain.Entities;
 
 [Table("MessageFiles")]
-public class MessageFiles : BaseEntity
+public class MessageFiles : Entity<Guid>
 {
     /// <summary>
     /// Id tin nhắn
     /// </summary>
-    public long MessageId { get; set; }
+    public Guid MessageId { get; set; }
 
     /// <summary>
     /// Link file

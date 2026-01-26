@@ -1,13 +1,11 @@
-using ChatApp.Domain.Common;
-
 namespace ChatApp.Domain.Entities;
 
-public class RolePermissions : BaseEntity
+public class RolePermissions : Entity<Guid>
 {
     /// <summary>
     /// Id vai trò
     /// </summary>
-    public long RoleId { get; set; }
+    public Guid RoleId { get; set; }
 
     /// <summary>
     /// Tên vai trò

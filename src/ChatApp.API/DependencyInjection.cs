@@ -1,7 +1,3 @@
-using ChatApp.Domain.Entities;
-using ChatApp.Infrastructure.DbContext;
-using Microsoft.AspNetCore.Identity;
-
 namespace ChatApp.Api;
 
 public static class DependencyInjection

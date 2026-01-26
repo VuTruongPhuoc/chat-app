@@ -1,10 +1,7 @@
-using Carter;
-using ChatApp.Api.Endpoints.Users;
-using ChatApp.Application.Dtos;
 using ChatApp.Application.Dtos.Users;
 using ChatApp.Application.Features.Users.Commands;
-using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Common.ValueObjects;
+using Common.Constants;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChatApp.Api.Endpoints.Users;
@@ -25,7 +22,7 @@ public sealed class RegisterUser : ICarterModule
         [FromBody] RegisterUserRequest request,
         CancellationToken cancellationToken)
     {
-        var command = new RegisterUserCommand(request);
+        var command = new RegisterUserCommand(request, Actor.System(Modules.System));
         var userId = await sender.Send(command, cancellationToken);
         return new ApiCreatedResponse<Guid>(userId);
     }

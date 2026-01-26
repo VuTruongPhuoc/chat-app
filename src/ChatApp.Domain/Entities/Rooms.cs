@@ -1,11 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using ChatApp.Domain.Common;
 using ChatApp.Domain.Enums;
 
 namespace ChatApp.Domain.Entities;
 
 [Table("Rooms")]
-public class Rooms : BaseEntity
+public class Rooms : Entity<Guid>
 {
     /// <summary>
     /// Name of the room.
