@@ -5,6 +5,8 @@ namespace ChatApp.Domain.Entities;
 [Table("Notifications")]
 public class Notifications : Entity<Guid>
 {
+    #region Fields, Properties
+
     /// <summary>
     /// Id người dùng
     /// </summary>
@@ -19,4 +21,6 @@ public class Notifications : Entity<Guid>
     /// Đã đọc chưa
     /// </summary>
     public bool IsRead { get; set; }
+
+    #endregion
 }

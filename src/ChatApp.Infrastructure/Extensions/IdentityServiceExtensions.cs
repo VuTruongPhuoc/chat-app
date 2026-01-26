@@ -8,6 +8,8 @@ namespace ChatApp.Infrastructure.Extensions;
 
 public static class IdentityServiceExtensions
 {
+    #region Methods
+
     public static IServiceCollection AddIdentityServices(this IServiceCollection services)
     {
         // Add Identity
@@ -25,4 +27,6 @@ public static class IdentityServiceExtensions
 
         return services;
     }
+
+    #endregion
 }

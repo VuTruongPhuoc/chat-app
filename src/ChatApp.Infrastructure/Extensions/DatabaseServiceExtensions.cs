@@ -7,6 +7,8 @@ namespace ChatApp.Infrastructure.Extensions;
 
 public static class DatabaseServiceExtensions
 {
+    #region Methods
+
     public static IServiceCollection AddDatabaseServices(this IServiceCollection services, IConfiguration configuration)
     {
         // Add DbContext
@@ -21,4 +23,6 @@ public static class DatabaseServiceExtensions
 
         return services;
     }
+
+    #endregion
 }

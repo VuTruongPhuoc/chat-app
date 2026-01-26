@@ -4,6 +4,8 @@ namespace ChatApp.Infrastructure.Extensions;
 
 public static class RepositoryServiceExtensions
 {
+    #region Methods
+
     public static IServiceCollection AddRepositoryServices(this IServiceCollection services)
     {
         // Add Repositories
@@ -11,4 +13,6 @@ public static class RepositoryServiceExtensions
 
         return services;
     }
+
+    #endregion
 }

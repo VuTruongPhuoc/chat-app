@@ -6,6 +6,8 @@ namespace ChatApp.Infrastructure;
 
 public static class DependencyInjection
 {
+    #region Methods
+
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDatabaseServices(configuration);
@@ -14,4 +16,6 @@ public static class DependencyInjection
 
         return services;
     }
+
+    #endregion
 }

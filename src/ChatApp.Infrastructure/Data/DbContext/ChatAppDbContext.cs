@@ -26,6 +26,8 @@ public class ChatAppDbContext : IdentityDbContext<Users, Roles, Guid>
 
     #endregion
 
+    #region Methods
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
@@ -42,4 +44,6 @@ public class ChatAppDbContext : IdentityDbContext<Users, Roles, Guid>
         
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
+
+    #endregion
 }

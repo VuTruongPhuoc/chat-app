@@ -6,10 +6,12 @@ namespace ChatApp.Domain.Entities;
 [Table("CallSessions")]
 public class CallSessions : EntityId<Guid>
 {
+    #region Fields, Properties
+
     /// <summary>
     /// Id phòng họp
     /// </summary>
-    public long RoomId { get; set; }
+    public Guid RoomId { get; set; }
 
     /// <summary>
     /// Kết thúc lúc
@@ -20,4 +22,6 @@ public class CallSessions : EntityId<Guid>
     /// Liên kết tới bảng rooms
     /// </summary>
     public Rooms Rooms { get; set; } = default!;
+
+    #endregion
 }

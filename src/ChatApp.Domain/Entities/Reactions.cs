@@ -5,6 +5,8 @@ namespace ChatApp.Domain.Entities;
 [Table("Reactions")]
 public class Reactions : Entity<Guid>
 {
+    #region Fields, Properties
+
     /// <summary>
     /// Id tin nhắn
     /// </summary>
@@ -24,4 +26,6 @@ public class Reactions : Entity<Guid>
     /// phản ứng lúc
     /// </summary>
     public DateTime ReactAt { get; set; } = default!;
+
+    #endregion
 }

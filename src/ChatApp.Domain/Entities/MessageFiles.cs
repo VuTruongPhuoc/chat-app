@@ -5,6 +5,8 @@ namespace ChatApp.Domain.Entities;
 [Table("MessageFiles")]
 public class MessageFiles : Entity<Guid>
 {
+    #region Fields, Properties
+    
     /// <summary>
     /// Id tin nhắn
     /// </summary>
@@ -24,4 +26,6 @@ public class MessageFiles : Entity<Guid>
     /// Kích cỡ file
     /// </summary>
     public long size { get; set; }
+
+    #endregion
 }

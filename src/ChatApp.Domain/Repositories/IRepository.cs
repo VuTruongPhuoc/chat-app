@@ -4,6 +4,8 @@ namespace ChatApp.Domain.Repositories;
 
 public interface IRepository<T> where T : class
 {
+    #region Methods
+
     Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default);
@@ -29,4 +31,6 @@ public interface IRepository<T> where T : class
     void Delete(T entity);
 
     void DeleteRange(IEnumerable<T> entities);
+
+    #endregion
 }

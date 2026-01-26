@@ -5,7 +5,8 @@ using Microsoft.EntityFrameworkCore;
 
 public class Repository<T>(ChatAppDbContext context) : IRepository<T> where T : class
 {
-    #region Fields
+    #region Fields, Properties
+
     private readonly DbSet<T> _dbSet = context.Set<T>();
 
     #endregion

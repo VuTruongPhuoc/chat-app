@@ -6,6 +6,8 @@ namespace ChatApp.Domain.Entities;
 [Table("Messages")]
 public class Messages : Entity<Guid>
 {
+    #region Fields, Properties
+    
     /// <summary>
     /// The user who sent the message.        
     /// </summary>           
@@ -36,9 +38,10 @@ public class Messages : Entity<Guid>
     /// </summary>
     public bool IsEdited { get; set; }
 
-
     /// <summary>
     /// The message is deleted
     /// </summary>
     public bool IsDeleted { get; set; }
+
+    #endregion
 }

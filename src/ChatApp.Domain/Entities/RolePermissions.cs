@@ -2,6 +2,8 @@ namespace ChatApp.Domain.Entities;
 
 public class RolePermissions : Entity<Guid>
 {
+    #region Fields, Properties
+
     /// <summary>
     /// Id vai trò
     /// </summary>
@@ -16,4 +18,6 @@ public class RolePermissions : Entity<Guid>
     /// Liên kết với Roles
     /// </summary>
     public Roles roles { get; set; } = default!;
+
+    #endregion
 }

@@ -6,10 +6,12 @@ namespace ChatApp.Domain.Entities;
 [Table("CallParticipants")]
 public class CallParticipants : EntityId<Guid>
 {
+    #region Fields, Properties
+
     /// <summary>
     /// Id của người dùng
     /// </summary>
-    public long UserId { get; set; }
+    public Guid UserId { get; set; }
 
     /// <summary>
     /// Tham gia lúc
@@ -25,4 +27,6 @@ public class CallParticipants : EntityId<Guid>
     /// Có gửi thông báo không
     /// </summary>
     public bool IsMuted { get; set; }
+
+    #endregion
 }
