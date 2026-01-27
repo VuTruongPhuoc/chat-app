@@ -13,8 +13,15 @@ public static class AuthenticationServiceExtensions
 
     public static IServiceCollection AddAuthenticationServices(this IServiceCollection services, IConfiguration configuration)
     {
+        var jwtSettings = configuration.GetSection(JwtOptions.Section).Get<JwtOptions>();
+
+        if (jwtSettings == null || string.IsNullOrEmpty(jwtSettings.Secret))
+        {
+            throw new InvalidOperationException("JWT Secret is not configured in appsettings.json");
+        }
+
         // Retrieve the JWT secret key from configuration and encode it to bytes
-        var key = Encoding.ASCII.GetBytes(configuration["JWT:Secret"]!);
+        var key = Encoding.ASCII.GetBytes(jwtSettings.Secret);
 
         // Configure authentication services with JWT Bearer as default schemes
         services.AddAuthentication(options =>
@@ -30,9 +37,9 @@ public static class AuthenticationServiceExtensions
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = configuration["JWT:ValidIssuer"],
+                        ValidIssuer = jwtSettings.ValidIssuer,
                         ValidateAudience = true,
-                        ValidAudience = configuration["JWT:ValidAudience"],
+                        ValidAudience = jwtSettings.ValidAudience,
                         ValidateIssuerSigningKey = true,
                         RequireExpirationTime = true,
                         IssuerSigningKey = new SymmetricSecurityKey(key),
