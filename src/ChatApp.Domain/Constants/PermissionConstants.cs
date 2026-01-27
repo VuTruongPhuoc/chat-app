@@ -1,14 +1,10 @@
 namespace ChatApp.Domain.Constants;
 
-public class PermissionConstants
+public enum PermissionConstants
 {
-    #region Fields, Properties
-
-    public const int VIEW = 1;
-    public const int CREATE = 2;
-    public const int UPDATE = 4;
-    public const int DELETE = 8;
-    public const int MANAGE = 16;
-
-    #endregion
+    VIEW = 1,
+    CREATE = 2,
+    UPDATE = 4,
+    DELETE = 8,
+    MANAGE = 16
 }

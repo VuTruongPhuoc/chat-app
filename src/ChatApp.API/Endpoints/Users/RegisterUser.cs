@@ -3,6 +3,7 @@ using ChatApp.Application.Features.Users.Commands;
 using Common.ValueObjects;
 using Common.Constants;
 using Microsoft.AspNetCore.Mvc;
+using ChatApp.Api.Routes;
 
 namespace ChatApp.Api.Endpoints.Users;
 
@@ -24,6 +25,7 @@ public sealed class RegisterUser : ICarterModule
     {
         var command = new RegisterUserCommand(request, Actor.System(Modules.System));
         var userId = await sender.Send(command, cancellationToken);
+ 
         return new ApiCreatedResponse<Guid>(userId);
     }
 }

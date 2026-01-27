@@ -1,3 +1,5 @@
+namespace ChatApp.Api.Routes;
+
 public sealed class UserRoutes
 {
     #region Routes Constants 

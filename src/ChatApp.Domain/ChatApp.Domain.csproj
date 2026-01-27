@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="9.0.0" />
+    <ProjectReference Include="..\ChatApp.Shared\Common\Common.csproj" />
   </ItemGroup>
 
 </Project>

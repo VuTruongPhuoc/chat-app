@@ -1,3 +1,4 @@
+using ChatApp.Domain.Constants;
 using Microsoft.AspNetCore.Identity;
 
 namespace ChatApp.Domain.Entities;
@@ -7,9 +8,9 @@ public class Roles : IdentityRole<Guid>
     #region Fields, Properties
 
     /// <summary>
-    /// Liên kết tới role permission
+    /// Quyền đối với roles
     /// </summary>
-    public IEnumerable<RolePermissions> RolePermissions { get; set; } = default!;
+    public List<PermissionConstants> RolePermissions { get; set; } = default!;
 
     #endregion
 }

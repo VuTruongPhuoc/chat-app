@@ -19,7 +19,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .WithMessage(MessageCode.BadRequest)
             .DependentRules(() =>
             {
-                RuleFor(x => x.request.UserName)
+                RuleFor(x => x.request.Username)
                     .NotEmpty()
                     .WithMessage(MessageCode.UserNameIsRequired);
                 RuleFor(x => x.request.Email)

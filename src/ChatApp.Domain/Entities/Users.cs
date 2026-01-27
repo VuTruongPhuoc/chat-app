@@ -21,5 +21,15 @@ public class Users : IdentityUser<Guid>
     /// </summary>
     public DateTime LastSeen { get; set; }
 
+    /// <summary>
+    /// Nhận token mới khi hết hạn
+    /// </summary>
+    public string? RefreshToken { get; set; } = default!;
+
+    /// <summary>
+    /// Thời gian token hết hạn
+    /// </summary>
+    public DateTime RefreshTokenExpiry { get; set; } = default!;
+
     #endregion
 }

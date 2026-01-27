@@ -1,16 +1,12 @@
 namespace ChatApp.Application.Dtos.Users;
 
-public class RegisterUserRequest
+public sealed class LoginRequest
 {
     #region Fields, Properties
 
     public string Username { get; set; } = default!;
 
-    public string Email { get; set; } = default!;
-
     public string Password { get; set; } = default!;
-    
-    public string AvatarUrl { get; set; } = default!;
 
-    #endregion
+    #endregion;
 }

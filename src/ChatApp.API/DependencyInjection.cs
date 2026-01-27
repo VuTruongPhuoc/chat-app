@@ -1,3 +1,5 @@
+using ChatApp.Api.Endpoints;
+
 namespace ChatApp.Api;
 
 public static class DependencyInjection
@@ -6,7 +8,8 @@ public static class DependencyInjection
     {
         services.AddCarter();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerServices(configuration);
+
         return services;
     }
 }

@@ -7,6 +7,7 @@ public readonly record struct Actor(ActorType Type, string Data)
     #region Static Methods
 
     public static Actor User(string data) => new(ActorType.User, data);
+    
     public static Actor System(string data) => new(ActorType.System, data);
 
     #endregion
