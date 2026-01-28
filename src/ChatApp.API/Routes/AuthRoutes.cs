@@ -12,5 +12,8 @@ public sealed class AuthRoutes
 
     public const string Register = $"/{Base}/register";
 
+    public const string GoogleLogin = $"/{Base}/google-login";
+
+
     #endregion
 }

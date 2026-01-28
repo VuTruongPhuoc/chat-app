@@ -1,6 +1,6 @@
 namespace Common.Configurations;
 
-public sealed class ConnectionStringsCfg
+public sealed class ConnectionStringsConfig
 {
     #region Fields, Properties
 

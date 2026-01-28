@@ -10,7 +10,7 @@ public class Roles : IdentityRole<Guid>
     /// <summary>
     /// Quyền đối với roles
     /// </summary>
-    public List<PermissionConstants> RolePermissions { get; set; } = default!;
+    public List<PermissionConstants> Permissions { get; set; } = default!;
 
     #endregion
 }

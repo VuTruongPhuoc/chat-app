@@ -23,6 +23,11 @@ public class MessageFiles : Entity<Guid>
     public string ext { get; set; } = default!;
 
     /// <summary>
+    /// 
+    /// </summary>
+    public string type { get; set; } = default!;
+
+    /// <summary>
     /// Kích cỡ file
     /// </summary>
     public long size { get; set; }

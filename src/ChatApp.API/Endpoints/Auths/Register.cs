@@ -1,9 +1,9 @@
-using ChatApp.Application.Dtos.Users;
 using Common.ValueObjects;
 using Common.Constants;
 using Microsoft.AspNetCore.Mvc;
 using ChatApp.Api.Routes;
 using ChatApp.Application.Features.Auth.Commands;
+using ChatApp.Application.Dtos.Auths.Requests;
 
 namespace ChatApp.Api.Endpoints.Auths;
 

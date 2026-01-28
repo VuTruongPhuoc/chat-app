@@ -10,9 +10,11 @@ public static class DependencyInjection
 
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDatabaseServices(configuration);
-        services.AddIdentityServices(); 
-        services.AddRepositoryServices();
+        services.AddDatabaseServices(configuration)
+                .AddAuthenticationServices(configuration)
+                .AddOptionsServices(configuration)
+                .AddIdentityServices()
+                .AddRepositoryServices();
 
         return services;
     }

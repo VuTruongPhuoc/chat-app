@@ -1,4 +1,4 @@
-using ChatApp.Application.Dtos.Users;
+using ChatApp.Application.Dtos.Auths.Requests;
 using Common.ValueObjects;
 using Common.Constants;
 using Common.Models.DTOs;

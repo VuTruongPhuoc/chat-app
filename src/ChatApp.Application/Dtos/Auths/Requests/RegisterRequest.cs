@@ -1,6 +1,6 @@
-namespace ChatApp.Application.Dtos.Users.Requests;
+namespace ChatApp.Application.Dtos.Auths.Requests;
 
-public class RegisterUserRequest
+public sealed class RegisterRequest
 {
     #region Fields, Properties
 
@@ -9,8 +9,6 @@ public class RegisterUserRequest
     public string Email { get; set; } = default!;
 
     public string PassWord { get; set; } = default!;
-    
-    public string AvatarUrl { get; set; } = default!;
 
     #endregion
 }

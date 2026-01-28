@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -25,27 +26,37 @@ public static class AuthenticationServiceExtensions
 
         // Configure authentication services with JWT Bearer as default schemes
         services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        // Add JWT Bearer authentication handler
+        .AddJwtBearer(options =>
+        {
+            options.SaveToken = true;
+            // Set token validation parameters
+            options.TokenValidationParameters = new TokenValidationParameters()
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-            // Add JWT Bearer authentication handler
-            .AddJwtBearer(options =>
-                {
-                    options.SaveToken = true;
-                    // Set token validation parameters
-                    options.TokenValidationParameters = new TokenValidationParameters()
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = jwtSettings.ValidIssuer,
-                        ValidateAudience = true,
-                        ValidAudience = jwtSettings.ValidAudience,
-                        ValidateIssuerSigningKey = true,
-                        RequireExpirationTime = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
-                        NameClaimType = ClaimTypes.Name,
-                    };
-                });
+                ValidateIssuer = true,
+                ValidIssuer = jwtSettings.ValidIssuer,
+                ValidateAudience = true,
+                ValidAudience = jwtSettings.ValidAudience,
+                ValidateIssuerSigningKey = true,
+                RequireExpirationTime = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                NameClaimType = ClaimTypes.Name,
+            };
+        })
+        .AddGoogle(googleOptions =>
+        {
+            googleOptions.ClientId = configuration[$"{GoogleAuthenticationConfig.Section}:{GoogleAuthenticationConfig.ClientId}"]!;
+            googleOptions.ClientSecret = configuration[$"{GoogleAuthenticationConfig.Section}:{GoogleAuthenticationConfig.ClientSecret}"]!;
+
+            // IdentityConstants.ExternalScheme giúp Identity quản lý User từ Google vào bảng AspNetUserLogins
+            googleOptions.SignInScheme = IdentityConstants.ExternalScheme; 
+        });
+
+        services.AddAuthorization();
 
         return services;
     }

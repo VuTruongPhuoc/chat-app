@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
-using ChatApp.Application.Dtos.Users;
+using ChatApp.Application.Dtos.Auths.Requests;
 using ChatApp.Domain.Constants;
 using ChatApp.Domain.Entities;
 using ChatApp.Domain.Repositories;
@@ -49,9 +49,9 @@ public class IdentityRepository : IIdentityRepository
 
     public async Task<ApiResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
     {
-        var user = await _userManager.FindByNameAsync(request.Username);
+        var user = await _userManager.FindByNameAsync(request.UserName);
 
-        if(user is null || !await _userManager.CheckPasswordAsync(user, request.Password))
+        if(user is null || !await _userManager.CheckPasswordAsync(user, request.PassWord))
         {
             return new ApiResponse
             {
@@ -60,25 +60,8 @@ public class IdentityRepository : IIdentityRepository
             };
         }
 
-        var roles = await _userManager.GetRolesAsync(user);
-        var claims = new List<Claim>
-        {
-            new Claim(nameof(Users.UserName), request.Username),
-            new Claim(ClaimTypes.Name, request.Username),
-            new Claim(nameof(Users.Id), user.Id.ToString()),
-            new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
-            new Claim(nameof(Users.AvatarUrl), user.AvatarUrl ?? string.Empty),
-            new Claim(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
-
-        foreach (var roleName in roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, roleName));
-        }
-
-        var securityToken = GenerateToken(claims);
-        var accessToken = new JwtSecurityTokenHandler().WriteToken(securityToken);
+        var securityToken = await GenerateJwtSercurityTokenByUserAsync(user);
+        var accessToken = new JwtSecurityTokenHandler().WriteToken(securityToken);;
 
         var refreshToken = this.GenerateRefreshToken();
         user.RefreshToken = refreshToken;
@@ -101,7 +84,7 @@ public class IdentityRepository : IIdentityRepository
 
     public async Task<ApiResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default)
     {
-        var existingUserByName = await _userManager.FindByNameAsync(request.Username);
+        var existingUserByName = await _userManager.FindByNameAsync(request.UserName);
         var existingUserByEmail = await _userManager.FindByEmailAsync(request.Email);
 
         if (existingUserByName is not null || existingUserByEmail is not null)
@@ -120,7 +103,7 @@ public class IdentityRepository : IIdentityRepository
 
         var user = _mapper.Map<Users>(request);
 
-        await _userManager.CreateAsync(user, request.Password);
+        await _userManager.CreateAsync(user, request.PassWord);
         await _userManager.AddToRoleAsync(user, RoleConstants.Member);
 
         return new ApiResponse()
@@ -148,10 +131,37 @@ public class IdentityRepository : IIdentityRepository
         return tokenHandler.CreateJwtSecurityToken(tokenDescriptor);;
     }
 
+    public async Task<JwtSecurityToken> GenerateJwtSercurityTokenByUserAsync(Users user)
+    {
+        var roles = await _userManager.GetRolesAsync(user);
+        var claims = new List<Claim>
+        {
+            new Claim(nameof(Users.UserName), user.UserName ?? string.Empty),
+            new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
+            new Claim(nameof(Users.Id), user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
+            new Claim(nameof(Users.AvatarUrl), user.AvatarUrl ?? string.Empty),
+            new Claim(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        };
+
+        foreach (var roleName in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, roleName));
+        }
+
+        return GenerateToken(claims);
+    }
+
+    public async Task<string> GenerateTokenByUser(Users user)
+    {
+        var securityToken = await GenerateJwtSercurityTokenByUserAsync(user);
+        return new JwtSecurityTokenHandler().WriteToken(securityToken);
+    }
+
     public string GenerateRefreshToken()
     {
         var randomNumber = new byte[64];
-
         using (var numberGenerator = RandomNumberGenerator.Create())
         {
             numberGenerator.GetBytes(randomNumber);

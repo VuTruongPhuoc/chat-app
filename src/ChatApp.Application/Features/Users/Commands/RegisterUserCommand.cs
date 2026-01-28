@@ -1,4 +1,4 @@
-using ChatApp.Application.Dtos.Users;
+using ChatApp.Application.Dtos.Users.Requests;
 using Common.ValueObjects;
 using Common.Constants;
 using FluentValidation;
@@ -19,7 +19,7 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .WithMessage(MessageCode.BadRequest)
             .DependentRules(() =>
             {
-                RuleFor(x => x.request.Username)
+                RuleFor(x => x.request.UserName)
                     .NotEmpty()
                     .WithMessage(MessageCode.UserNameIsRequired);
                 RuleFor(x => x.request.Email)

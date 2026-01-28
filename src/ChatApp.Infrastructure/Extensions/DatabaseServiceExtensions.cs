@@ -12,7 +12,7 @@ public static class DatabaseServiceExtensions
     public static IServiceCollection AddDatabaseServices(this IServiceCollection services, IConfiguration configuration)
     {
         // Add DbContext
-        var conn = configuration[$"{ConnectionStringsCfg.Section}:{ConnectionStringsCfg.Database}"];
+        var conn = configuration[$"{ConnectionStringsConfig.Section}:{ConnectionStringsConfig.Database}"];
 
         services.AddDbContext<ChatAppDbContext>(options =>
             {

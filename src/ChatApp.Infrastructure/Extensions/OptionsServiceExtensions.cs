@@ -7,7 +7,7 @@ public static class OptionsServiceExtension
 {
     #region Methods
 
-    public static IServiceCollection AddOptionServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddOptionsServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.Section));
         

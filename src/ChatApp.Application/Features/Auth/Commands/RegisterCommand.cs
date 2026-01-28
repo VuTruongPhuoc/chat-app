@@ -1,4 +1,4 @@
-using ChatApp.Application.Dtos.Users;
+using ChatApp.Application.Dtos.Auths.Requests;
 using Common.Constants;
 using Common.Models.Responses;
 using Common.ValueObjects;
@@ -20,7 +20,7 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
             .WithMessage(MessageCode.BadRequest)
             .DependentRules(() =>
             {
-                RuleFor(r => r.request.Username)
+                RuleFor(r => r.request.UserName)
                     .NotEmpty()
                     .WithMessage(MessageCode.UserNameIsRequired);
                 RuleFor(r => r.request.Email)
@@ -28,7 +28,7 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
                     .WithMessage(MessageCode.EmailIsRequired)
                     .EmailAddress()
                     .WithMessage(MessageCode.InvalidEmailFormat);
-                RuleFor(r => r.request.Password)
+                RuleFor(r => r.request.PassWord)
                     .NotEmpty()
                     .WithMessage(MessageCode.PassWordIsRequired);    
             });
