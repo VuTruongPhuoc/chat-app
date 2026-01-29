@@ -47,7 +47,7 @@ public class GoogleLoginCommandHandler : IRequestHandler<GoogleLoginCommand, Goo
         {
             user = new Domain.Entities.Users 
             { 
-                UserName = payload.Name, 
+                UserName = payload.Email, 
                 Email = payload.Email, 
                 AvatarUrl = payload.Picture,
                 EmailConfirmed = true 

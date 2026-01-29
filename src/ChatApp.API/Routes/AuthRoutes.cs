@@ -1,6 +1,6 @@
 namespace ChatApp.Api.Routes;
 
-public sealed class AuthRoutes
+public sealed class AuthRoutes : ApiBaseRoute
 {
     #region Routes Constants 
 
@@ -8,12 +8,11 @@ public sealed class AuthRoutes
 
     public const string Base = "auth";
 
-    public const string Login = $"/{Base}/login";
+    public const string Login = $"/{ApiRoute}/{Base}/login";
 
-    public const string Register = $"/{Base}/register";
+    public const string Register = $"/{ApiRoute}/{Base}/register";
 
-    public const string GoogleLogin = $"/{Base}/google-login";
-
+    public const string GoogleLogin = $"/{ApiRoute}/{Base}/google-login";
 
     #endregion
 }

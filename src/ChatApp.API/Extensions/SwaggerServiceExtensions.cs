@@ -1,6 +1,6 @@
 using Microsoft.OpenApi.Models;
 
-namespace ChatApp.Api.Endpoints;
+namespace ChatApp.Api.Extensions;
 
 public static class SwaggerServiceExtensions
 {
