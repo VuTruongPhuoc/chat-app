@@ -8,25 +8,15 @@ public class CallParticipants : EntityId<Guid>
 {
     #region Fields, Properties
 
-    /// <summary>
-    /// Id của người dùng
-    /// </summary>
+    public Guid CallSessionId { get; set; }
+
     public Guid UserId { get; set; }
 
-    /// <summary>
-    /// Tham gia lúc
-    /// </summary>
-    public DateTime JoinAt { get; set; }
+    public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
 
-    /// <summary>
-    /// Rời lúc
-    /// </summary>
-    public DateTime LeftAt { get; set; }
-
-    /// <summary>
-    /// Có gửi thông báo không
-    /// </summary>
-    public bool IsMuted { get; set; }
+    public virtual CallSessions CallSession { get; set; } = default!;
+    
+    public virtual Users User { get; set; } = default!;
 
     #endregion
 }

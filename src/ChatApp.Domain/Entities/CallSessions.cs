@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ChatApp.Domain.Enums;
 
 namespace ChatApp.Domain.Entities;
 
@@ -8,20 +9,17 @@ public class CallSessions : EntityId<Guid>
 {
     #region Fields, Properties
 
-    /// <summary>
-    /// Id phòng họp
-    /// </summary>
     public Guid RoomId { get; set; }
+    
+    public CallType Type { get; set; }
+    
+    public CallStatus Status { get; set; }
+    
+    public DateTime? EndAt { get; set; }
 
-    /// <summary>
-    /// Kết thúc lúc
-    /// </summary>
-    public DateTime EndedAt { get; set; }
+    public virtual Rooms Room { get; set; } = default!;
 
-    /// <summary>
-    /// Liên kết tới bảng rooms
-    /// </summary>
-    public Rooms Rooms { get; set; } = default!;
+    public virtual List<CallParticipants> Participants { get; set; } = new List<CallParticipants>();
 
     #endregion
 }

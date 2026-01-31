@@ -19,9 +19,9 @@ public class Rooms : Entity<Guid>
     public string Description { get; set; } = default!;
 
     /// <summary>
-    /// Type of the room Public, Private, Group.
+    /// Type of the room Personal, Group.
     /// </summary>
-    public RoomType Type { get; set; } = RoomType.Public;
+    public RoomType Type { get; set; } = RoomType.Personal;
 
     /// <summary>
     /// Indicates if the room is private.
@@ -29,6 +29,10 @@ public class Rooms : Entity<Guid>
     /// If false, the room is public and anyone can join.
     /// </summary>
     public bool IsPrivate { get; set; } = false;
+
+    public virtual List<RoomMembers> Members { get; set; } = new List<RoomMembers>();
+    
+    public virtual List<Messages> Messages { get; set; } = new List<Messages>();
 
     #endregion
 }

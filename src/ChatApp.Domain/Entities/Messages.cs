@@ -11,7 +11,7 @@ public class Messages : Entity<Guid>
     /// <summary>
     /// The user who sent the message.        
     /// </summary>           
-    public Guid UserId { get; set; }
+    public Guid SenderId { get; set; }
 
     /// <summary>
     /// The room where the message was sent.
@@ -42,6 +42,15 @@ public class Messages : Entity<Guid>
     /// The message is deleted
     /// </summary>
     public bool IsDeleted { get; set; }
+
+    /// <summary>
+    /// The message is pinned
+    /// </summary>
+    public bool IsPinned { get; set; } = false;
+
+    public virtual Users Sender { get; set; } = default!;
+    
+    public virtual Rooms Room { get; set; } = default!;
 
     #endregion
 }

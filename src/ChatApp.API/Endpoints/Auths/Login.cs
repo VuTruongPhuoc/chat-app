@@ -5,22 +5,14 @@ using Common.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using ChatApp.Api.Routes;
 using ChatApp.Application.Features.Auths.Commands;
-using ChatApp.Api.Abstractions;
 
 namespace ChatApp.Api.Endpoints.Auths;
 
-public sealed class Login : BaseEnpoint
+public sealed class Login : ICarterModule
 {
-    public override void AddRoutes(IEndpointRouteBuilder app)
+    public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost(AuthRoutes.Login, async (
-            ISender sender,
-            [FromBody] LoginRequest request,
-            CancellationToken ct) => 
-        {
-            var command = new LoginCommand(request, Actor.System(Modules.User));
-            return await ProcessRequestAsync(sender, command, ct);
-        })
+        app.MapPost(AuthRoutes.Login, HandleLoginAsync)
         .WithTags(AuthRoutes.Tags)
         .WithName(nameof(Login))
         .Produces<ApiLoginResponse<UserDto>>(StatusCodes.Status200OK)

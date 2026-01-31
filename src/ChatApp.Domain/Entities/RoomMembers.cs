@@ -4,19 +4,26 @@ using ChatApp.Domain.Enums;
 namespace ChatApp.Domain.Entities;
 
 [Table("RoomMembers")]
-public class RoomMembers : Entity<Guid>
+public class RoomMembers
 {
     #region Fields, Properties
 
-    public Guid RoomId { get; set; }
-
     public Guid UserId { get; set; }
 
-    public Role Role { get; set; } = Role.Member; // Default role is Member
+    public Guid RoomId { get; set; }
 
-    public List<int>? permission { get; set; }
+    public string? Nickname { get; set; }
+
+    /// <summary>
+    /// Lưu ID tin nhắn cuối cùng mà User này đã đọc
+    /// </summary>
+    public Guid? LastReadMessageId { get; set; }
 
     public DateTime JoinedAt { get; set; } = DateTime.UtcNow;
+
+    public virtual Users User { get; set; } = default!;
+
+    public virtual Rooms Room { get; set; } = default!;
 
     #endregion
 }

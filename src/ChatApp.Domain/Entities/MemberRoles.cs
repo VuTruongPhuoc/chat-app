@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace ChatApp.Domain.Entities;
 
+[Table("MemberRoles")]
 public class UserRoles
 {
     #region Fields, Properties
@@ -15,14 +18,15 @@ public class UserRoles
     public Guid UserId { get; set; }
 
     /// <summary>
-    /// Liên kết với Roles
+    /// Id server
     /// </summary>
-    public Roles roles { get; set; } = default!;
+    public Guid ServerId { get; set; }
 
-    /// <summary>
-    /// Liên kết với Permissions
-    /// </summary>
-    public Users users { get; set; } = default!;
+    public virtual Roles Role { get; set; } = default!;
+
+    public virtual Users User { get; set; } = default!;
+
+    public virtual Servers Server { get; set; } = default!;
 
     #endregion
 }

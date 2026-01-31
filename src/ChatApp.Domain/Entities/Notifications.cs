@@ -7,20 +7,25 @@ public class Notifications : Entity<Guid>
 {
     #region Fields, Properties
 
-    /// <summary>
-    /// Id người dùng
-    /// </summary>
-    public Guid UserId { get; set; }
+    public Guid ReceiverId { get; set; }
 
-    /// <summary>
-    /// Nội dung thông báo
-    /// </summary>
+    public Guid? SenderId { get; set; }  
+    
+    public string Title { get; set; } = default!;
+
     public string Content { get; set; } = default!;
+    
+    public NotificationType Type { get; set; }
+
+    public bool IsRead { get; set; } = false;
 
     /// <summary>
-    /// Đã đọc chưa
+    /// Link tới thực thể liên quan (ví dụ ID của Room hoặc ID của User) 
     /// </summary>
-    public bool IsRead { get; set; }
+    
+    public Guid? EntityId { get; set; } 
+
+    public virtual Users Receiver { get; set; } = default!;
 
     #endregion
 }

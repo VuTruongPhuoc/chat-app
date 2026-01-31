@@ -27,5 +27,9 @@ public class Reactions : Entity<Guid>
     /// </summary>
     public DateTime ReactAt { get; set; } = default!;
 
+    public virtual Messages Message { get; set; } = default!;
+
+    public virtual Users User { get; set; } = default!;
+
     #endregion
 }

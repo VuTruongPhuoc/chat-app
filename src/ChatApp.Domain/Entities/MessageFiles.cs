@@ -13,6 +13,11 @@ public class MessageFiles : Entity<Guid>
     public Guid MessageId { get; set; }
 
     /// <summary>
+    /// Tên file
+    /// </summary>
+    public string FileName { get; set; } = default!;
+
+    /// <summary>
     /// Link file
     /// </summary>
     public string Url { get; set; } = default!;
@@ -20,17 +25,16 @@ public class MessageFiles : Entity<Guid>
     /// <summary>
     /// Đuôi file
     /// </summary>
-    public string ext { get; set; } = default!;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public string type { get; set; } = default!;
+    public string Ext { get; set; } = default!;
 
     /// <summary>
     /// Kích cỡ file
     /// </summary>
-    public long size { get; set; }
+    public long Size { get; set; }
+
+    public virtual Messages Message { get; set; } = default!;
+
+    public virtual Users User { get; set; } = default!;
 
     #endregion
 }

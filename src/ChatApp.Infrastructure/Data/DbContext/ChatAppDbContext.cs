@@ -41,6 +41,73 @@ public class ChatAppDbContext : IdentityDbContext<Users, Roles, Guid>
                     entityType.SetTableName(tableName.Substring(6));
                 }
         }
+
+        builder.Entity<RoomMembers>(entity =>
+        {
+            entity.HasKey(rm => new { rm.UserId, rm.RoomId });
+
+            entity.HasOne(rm => rm.User)
+                .WithMany(u => u.RoomMembers) 
+                .HasForeignKey(rm => rm.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(rm => rm.Room)
+                .WithMany(r => r.Members)
+                .HasForeignKey(rm => rm.RoomId)
+                .OnDelete(DeleteBehavior.Cascade); 
+        });
+
+        builder.Entity<Messages>(entity =>
+        {
+            entity.HasOne(m => m.Room)
+                .WithMany(r => r.Messages)
+                .HasForeignKey(m => m.RoomId)
+                .OnDelete(DeleteBehavior.Cascade); 
+
+            entity.HasOne(m => m.Sender)
+                .WithMany()
+                .HasForeignKey(m => m.SenderId)
+                .OnDelete(DeleteBehavior.Restrict); 
+        });
+
+        builder.Entity<MessageFiles>(entity =>
+        {
+            entity.HasOne(mf => mf.Message)
+                .WithMany() 
+                .HasForeignKey(mf => mf.MessageId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        builder.Entity<Reactions>(entity =>
+        {
+            entity.HasOne(r => r.Message)
+                .WithMany() 
+                .HasForeignKey(r => r.MessageId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        builder.Entity<Friendship>(entity =>
+        {
+            entity.HasKey(f => new { f.UserId, f.FriendId });
+
+            entity.HasOne(f => f.User)
+                .WithMany()
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(f => f.Friend)
+                .WithMany()
+                .HasForeignKey(f => f.FriendId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        builder.Entity<Notifications>(entity =>
+        {
+            entity.HasOne(n => n.Receiver)
+                .WithMany()
+                .HasForeignKey(n => n.ReceiverId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
         
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
