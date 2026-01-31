@@ -1,3 +1,4 @@
+using BuildingBlocks.Behaviors;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,7 @@ public static class MediatRServiceExtensions
         services.AddMediatR(cfg => 
         {
             cfg.RegisterServicesFromAssembly(typeof(ApplicationMarker).Assembly);
+            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
         
         return services;
