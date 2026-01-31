@@ -14,6 +14,5 @@ public interface IIdentityRepository
 
     Task<string> GenerateTokenByUser(Users user);
 
-
     #endregion
 }

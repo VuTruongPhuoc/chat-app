@@ -20,10 +20,10 @@ public sealed class RegisterUser : ICarterModule
 
     private async Task<ApiCreatedResponse<Guid>> HandleCreateUserAsync(
         ISender sender,
-        [FromBody] RegisterUserRequest request,
+        [FromBody] UpsertUserRequest request,
         CancellationToken cancellationToken)
-    {
-        var command = new RegisterUserCommand(request, Actor.System(Modules.System));
+    {       
+        var command = new CreateUserCommand(request, Actor.System(Modules.System));
         var userId = await sender.Send(command, cancellationToken);
  
         return new ApiCreatedResponse<Guid>(userId);

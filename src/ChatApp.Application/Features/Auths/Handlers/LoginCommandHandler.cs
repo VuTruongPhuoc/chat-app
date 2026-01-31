@@ -1,4 +1,4 @@
-using ChatApp.Application.Features.Auth.Commands;
+using ChatApp.Application.Features.Auths.Commands;
 using ChatApp.Domain.Repositories;
 using Common.Models.Responses;
 using MediatR;

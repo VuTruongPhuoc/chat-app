@@ -12,7 +12,7 @@ public sealed class UserMappingProfile : Profile
 
     public UserMappingProfile()
     {
-        CreateMap<RegisterUserRequest, Users>()
+        CreateMap<UpsertUserRequest, Users>()
             .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.PassWord));
 
         CreateMap<Users, UserDto>();

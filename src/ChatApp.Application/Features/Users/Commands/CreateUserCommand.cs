@@ -6,13 +6,13 @@ using MediatR;
 
 namespace ChatApp.Application.Features.Users.Commands;
 
-public record RegisterUserCommand(RegisterUserRequest request, Actor actor) : IRequest<Guid>;
+public record CreateUserCommand(UpsertUserRequest request, Actor actor) : IRequest<Guid>;
 
-public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
     #region Ctor
 
-    public RegisterUserCommandValidator()
+    public CreateUserCommandValidator()
     {
         RuleFor(x => x.request)
             .NotNull()

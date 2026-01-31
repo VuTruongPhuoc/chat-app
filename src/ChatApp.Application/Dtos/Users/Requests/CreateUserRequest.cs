@@ -1,6 +1,6 @@
 namespace ChatApp.Application.Dtos.Users.Requests;
 
-public class RegisterUserRequest
+public class UpsertUserRequest
 {
     #region Fields, Properties
 

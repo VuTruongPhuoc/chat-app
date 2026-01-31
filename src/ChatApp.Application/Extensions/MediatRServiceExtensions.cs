@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ChatApp.Application.Extensions;
@@ -8,7 +9,12 @@ public static class MediatRServiceExtensions
 
     public static IServiceCollection AddMediatRServices(this IServiceCollection services)
     {
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(ApplicationMarker).Assembly));
+        services.AddValidatorsFromAssembly(typeof(ApplicationMarker).Assembly);
+        services.AddMediatR(cfg => 
+        {
+            cfg.RegisterServicesFromAssembly(typeof(ApplicationMarker).Assembly);
+        });
+        
         return services;
     }
 

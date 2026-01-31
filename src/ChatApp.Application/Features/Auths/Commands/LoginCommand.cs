@@ -5,15 +5,15 @@ using Common.ValueObjects;
 using FluentValidation;
 using MediatR;
 
-namespace ChatApp.Application.Features.Auth.Commands;
+namespace ChatApp.Application.Features.Auths.Commands;
 
-public record RegisterCommand(RegisterRequest request, Actor actor) : IRequest<ApiResponse>;
+public record LoginCommand(LoginRequest request, Actor actor) : IRequest<ApiResponse>;
 
-public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
+public class LoginCommandValidator : AbstractValidator<LoginCommand>
 {
     #region Ctors
 
-    public RegisterCommandValidator()
+    public LoginCommandValidator()
     {
         RuleFor(r => r.request)
             .NotNull()
@@ -23,11 +23,6 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
                 RuleFor(r => r.request.UserName)
                     .NotEmpty()
                     .WithMessage(MessageCode.UserNameIsRequired);
-                RuleFor(r => r.request.Email)
-                    .NotEmpty()
-                    .WithMessage(MessageCode.EmailIsRequired)
-                    .EmailAddress()
-                    .WithMessage(MessageCode.InvalidEmailFormat);
                 RuleFor(r => r.request.PassWord)
                     .NotEmpty()
                     .WithMessage(MessageCode.PassWordIsRequired);    
@@ -36,3 +31,4 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 
     #endregion
 }
+

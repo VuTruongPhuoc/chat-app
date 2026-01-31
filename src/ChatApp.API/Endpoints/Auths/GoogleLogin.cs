@@ -3,7 +3,7 @@ using Common.Constants;
 using Microsoft.AspNetCore.Mvc;
 using ChatApp.Api.Routes;
 using ChatApp.Application.Dtos.Auths.Responses;
-using ChatApp.Application.Features.Auth.Commands;
+using ChatApp.Application.Features.Auths.Commands;
 
 namespace ChatApp.Api.Endpoints.Auths;
 
@@ -24,9 +24,9 @@ public sealed class GoogleLogin : ICarterModule
         [FromBody] GoogleLoginRequest request,
         CancellationToken cancellationToken)
     {
-        var command = new GoogleLoginCommand(request, Actor.System(Modules.User));
+        var command = new GoogleLoginCommand(request, Actor.User(Modules.User));
         var response = await sender.Send(command, cancellationToken);
-        
+                    
         return response;
     }
 }

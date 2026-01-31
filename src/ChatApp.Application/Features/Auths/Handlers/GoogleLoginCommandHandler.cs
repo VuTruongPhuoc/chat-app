@@ -1,5 +1,5 @@
 using ChatApp.Application.Dtos.Auths.Responses;
-using ChatApp.Application.Features.Auth.Commands;
+using ChatApp.Application.Features.Auths.Commands;
 using ChatApp.Domain.Repositories;
 using Google.Apis.Auth;
 using MediatR;

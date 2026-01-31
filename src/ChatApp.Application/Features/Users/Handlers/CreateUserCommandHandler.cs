@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ChatApp.Application.Features.Users.Handlers;
 
-public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Guid>
+public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Guid>
 {
     #region Fields, Properties
 
@@ -16,7 +16,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
 
     #region Ctors
 
-    public RegisterUserCommandHandler(IUserRepository userRepository, IMapper mapper)
+    public CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
         _mapper = mapper;
@@ -26,7 +26,7 @@ public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, G
 
     #region Methods
 
-    public async Task<Guid> Handle(RegisterUserCommand command, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateUserCommand command, CancellationToken cancellationToken)
     {
         var user = _mapper.Map<Domain.Entities.Users>(command.request);
         return await _userRepository.RegisterUserAsync(user, cancellationToken);
