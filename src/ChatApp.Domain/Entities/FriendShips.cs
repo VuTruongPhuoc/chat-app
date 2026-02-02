@@ -3,7 +3,7 @@ using ChatApp.Domain.Enums;
 
 namespace ChatApp.Domain.Entities;
 
-[Table("Friendships")]
+[Table("FriendShips")]
 public class Friendship : Entity<Guid>
 {
     #region Fields, Properties

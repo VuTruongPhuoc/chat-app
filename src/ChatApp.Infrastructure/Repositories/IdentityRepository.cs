@@ -55,7 +55,7 @@ public class IdentityRepository : IIdentityRepository
         {
             return new ApiResponse
             {
-                Success = false,
+                IsSuccess = false,
                 StatusCode = HttpStatusCode.Unauthorized
             };
         }
@@ -73,7 +73,7 @@ public class IdentityRepository : IIdentityRepository
 
         return new ApiLoginResponse<UserDto>
         {
-            Success = true,
+            IsSuccess = true,
             StatusCode = HttpStatusCode.OK,
             AccessToken = accessToken,
             Expiration = securityToken.ValidTo,
@@ -95,7 +95,7 @@ public class IdentityRepository : IIdentityRepository
 
             return new ApiResponse
             {
-                Success = false,
+                IsSuccess = false,
                 StatusCode = HttpStatusCode.BadRequest,
                 Message = message
             };
@@ -108,7 +108,7 @@ public class IdentityRepository : IIdentityRepository
 
         return new ApiResponse()
         {
-            Success = true,
+            IsSuccess = true,
             StatusCode = HttpStatusCode.Created,
             Message = MessageCode.RegisterSuccess,
         };

@@ -6,7 +6,7 @@ public class ApiResponse
 {
     #region Fields, Properties
 
-    public bool Success { get; set; }
+    public bool IsSuccess { get; set; }
     
     public HttpStatusCode StatusCode { get; set; }
     
