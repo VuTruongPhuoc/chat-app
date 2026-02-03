@@ -1,8 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Net;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
 using AutoMapper;
 using ChatApp.Application.Dtos.Auths.Requests;
 using ChatApp.Application.Dtos.Emails;
@@ -171,6 +166,20 @@ public class IdentityService : IIdentityService
         }
 
         return ApiResponse.Success();
+    }
+
+    public async Task<bool> EmailVerificationAsync(EmailVerificationRequest request, CancellationToken cancellationToken = default)
+    {
+        var user = await _userManager.FindByEmailAsync(request.Email);
+
+        if (user is null)
+        {
+            return false;
+        }
+
+        await _userManager.ConfirmEmailAsync(user, request.Token);
+
+        return user?.EmailConfirmed ?? false;
     }
 
     #endregion

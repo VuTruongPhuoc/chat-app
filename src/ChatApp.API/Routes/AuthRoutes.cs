@@ -18,5 +18,7 @@ public sealed class AuthRoutes : ApiBaseRoute
 
     public const string ResetPassword = $"/{ApiRoute}/{Base}/reset-password";
 
+    public const string EmailVerification = $"/{ApiRoute}/{Base}/email-verification";
+
     #endregion
 }
