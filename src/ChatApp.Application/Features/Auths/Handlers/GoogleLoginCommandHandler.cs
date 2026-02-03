@@ -1,6 +1,7 @@
+using ChatApp.Application.Common.Interfaces;
 using ChatApp.Application.Dtos.Auths.Responses;
 using ChatApp.Application.Features.Auths.Commands;
-using ChatApp.Domain.Repositories;
+using ChatApp.Domain.Services;
 using Google.Apis.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +15,7 @@ public class GoogleLoginCommandHandler : IRequestHandler<GoogleLoginCommand, Goo
 
     private readonly UserManager<Domain.Entities.Users> _userManager;
 
-    private readonly IIdentityRepository _identityRepository;
+    private readonly ITokenService _tokenService;
 
     private readonly IConfiguration _configuration;
 
@@ -22,11 +23,11 @@ public class GoogleLoginCommandHandler : IRequestHandler<GoogleLoginCommand, Goo
 
     #region Ctors
 
-    public GoogleLoginCommandHandler(UserManager<Domain.Entities.Users> userManager, IConfiguration configuration, IIdentityRepository identityRepository)
+    public GoogleLoginCommandHandler(UserManager<Domain.Entities.Users> userManager, IConfiguration configuration, ITokenService tokenService)
     {
         _userManager = userManager;
         _configuration = configuration;
-        _identityRepository = identityRepository;
+        _tokenService = tokenService;
     }
 
     #endregion
@@ -58,8 +59,11 @@ public class GoogleLoginCommandHandler : IRequestHandler<GoogleLoginCommand, Goo
             await _userManager.AddLoginAsync(user, new UserLoginInfo(google, payload.Subject, google));
         }
 
+        var roles = await _userManager.GetRolesAsync(user);
+
         // 3. Tạo JWT nội bộ
-        var token = await _identityRepository.GenerateTokenByUser(user);
+        var (token, _) = _tokenService.GenerateAccessToken(user, roles);
+
         return new GoogleLoginResponse(token, user.Email!);   
     }
 }

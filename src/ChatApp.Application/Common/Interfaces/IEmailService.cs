@@ -1,6 +1,6 @@
 using ChatApp.Application.Dtos.Emails;
 
-namespace ChatApp.Application.Services;
+namespace ChatApp.Application.Common.Interfaces;
 
 public interface IEmailService
 {

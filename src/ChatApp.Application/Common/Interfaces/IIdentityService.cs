@@ -2,9 +2,9 @@ using ChatApp.Application.Dtos.Auths.Requests;
 using ChatApp.Domain.Entities;
 using Common.Models.Responses;
 
-namespace ChatApp.Domain.Repositories;
+namespace ChatApp.Domain.Services;
 
-public interface IIdentityRepository
+public interface IIdentityService
 {
     #region Methods
 
@@ -15,8 +15,6 @@ public interface IIdentityRepository
     Task<ApiResponse> ForgotPasswordAsync(string Email, CancellationToken cancellationToken = default);
     
     Task<ApiResponse> ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default);
-
-    Task<string> GenerateTokenByUser(Users user);
 
     #endregion
 }

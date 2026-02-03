@@ -6,21 +6,20 @@ using System.Text;
 using AutoMapper;
 using ChatApp.Application.Dtos.Auths.Requests;
 using ChatApp.Application.Dtos.Emails;
-using ChatApp.Application.Services;
+using ChatApp.Application.Common.Interfaces;
 using ChatApp.Domain.Constants;
 using ChatApp.Domain.Entities;
-using ChatApp.Domain.Repositories;
+using ChatApp.Domain.Services;
 using Common.Constants;
 using Common.Models.DTOs;
 using Common.Models.Responses;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
 
 namespace ChatApp.Infrastructure.Repositories;
 
-public class IdentityRepository : IIdentityRepository
+public class IdentityService : IIdentityService
 {
     #region Fields, Properties
 
@@ -32,6 +31,8 @@ public class IdentityRepository : IIdentityRepository
 
     private readonly IEmailService _emailService;
 
+    private readonly ITokenService _tokenService;
+
     private readonly IOptions<JwtOptions> _jwtOptions;
 
     private readonly IOptions<FrontEndOptions> _frontEndOptions;
@@ -42,7 +43,7 @@ public class IdentityRepository : IIdentityRepository
 
     #region Ctors
 
-    public IdentityRepository(UserManager<Users> userManager, RoleManager<Roles> roleManager, IConfiguration configuration, IOptions<JwtOptions> jwtOptions, IMapper mapper, IEmailService emailService, IOptions<FrontEndOptions> frontEndOptions)
+    public IdentityService(UserManager<Users> userManager, RoleManager<Roles> roleManager, IConfiguration configuration, IOptions<JwtOptions> jwtOptions, IMapper mapper, IEmailService emailService, IOptions<FrontEndOptions> frontEndOptions, ITokenService tokenService)
     {
         _userManager = userManager;
         _roleManager = roleManager;
@@ -51,6 +52,7 @@ public class IdentityRepository : IIdentityRepository
         _mapper = mapper;
         _emailService = emailService;
         _frontEndOptions = frontEndOptions;
+        _tokenService = tokenService;
     }
 
     #endregion
@@ -66,25 +68,24 @@ public class IdentityRepository : IIdentityRepository
             return ApiResponse.Unauthorized();
         }
 
-        var securityToken = await GenerateJwtSercurityTokenByUserAsync(user);
-        var accessToken = new JwtSecurityTokenHandler().WriteToken(securityToken);;
+        var roles = await _userManager.GetRolesAsync(user);
 
-        var refreshToken = this.GenerateRefreshToken();
+        var (accessToken, expiration) = _tokenService.GenerateAccessToken(user, roles);
+        var refreshToken = _tokenService.GenerateRefreshToken();
+
         user.RefreshToken = refreshToken;
-        user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(_jwtOptions.Value.RefreshTokenExpireDays);
+        user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(_jwtOptions.Value.AccessTokenExpirationMinutes);
 
         await _userManager.UpdateAsync(user);
-
-        var userDto = _mapper.Map<UserDto>(user);
 
         return new ApiLoginResponse<UserDto>
         {
             IsSuccess = true,
             StatusCode = HttpStatusCode.OK,
             AccessToken = accessToken,
-            Expiration = securityToken.ValidTo,
+            Expiration = expiration,
             RefreshToken = refreshToken,
-            Data = userDto
+            Data = _mapper.Map<UserDto>(user)
         };
     }
 
@@ -171,64 +172,6 @@ public class IdentityRepository : IIdentityRepository
         }
 
         return ApiResponse.Success();
-    }
-
-    #endregion
-
-    #region Methods
-
-    public JwtSecurityToken GenerateToken(List<Claim> claims)
-    {
-        var authSigninKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtOptions.Value.Secret));
-        var tokenHandler = new JwtSecurityTokenHandler();
-
-        var tokenDescriptor = new SecurityTokenDescriptor()
-        {
-            Issuer = _jwtOptions.Value.ValidIssuer,
-            Audience = _jwtOptions.Value.ValidAudience,
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(30),
-            SigningCredentials = new SigningCredentials(authSigninKey, SecurityAlgorithms.HmacSha256)
-        };
-
-        return tokenHandler.CreateJwtSecurityToken(tokenDescriptor);;
-    }
-
-    public async Task<JwtSecurityToken> GenerateJwtSercurityTokenByUserAsync(Users user)
-    {
-        var roles = await _userManager.GetRolesAsync(user);
-        var claims = new List<Claim>
-        {
-            new Claim(nameof(Users.UserName), user.UserName ?? string.Empty),
-            new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
-            new Claim(nameof(Users.Id), user.Id.ToString()),
-            new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-        };
-
-        foreach (var roleName in roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, roleName));
-        }
-
-        return GenerateToken(claims);
-    }
-
-    public async Task<string> GenerateTokenByUser(Users user)
-    {
-        var securityToken = await GenerateJwtSercurityTokenByUserAsync(user);
-        return new JwtSecurityTokenHandler().WriteToken(securityToken);
-    }
-
-    public string GenerateRefreshToken()
-    {
-        var randomNumber = new byte[64];
-        using (var numberGenerator = RandomNumberGenerator.Create())
-        {
-            numberGenerator.GetBytes(randomNumber);
-        }
-
-        return Convert.ToBase64String(randomNumber);
     }
 
     #endregion

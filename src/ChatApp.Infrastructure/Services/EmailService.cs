@@ -1,6 +1,6 @@
 using MailKit.Net.Smtp;
 using ChatApp.Application.Dtos.Emails;
-using ChatApp.Application.Services;
+using ChatApp.Application.Common.Interfaces;
 using Microsoft.Extensions.Options;
 using MimeKit;
 

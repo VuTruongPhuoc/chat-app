@@ -1,5 +1,5 @@
 using ChatApp.Application.Features.Auths.Commands;
-using ChatApp.Domain.Repositories;
+using ChatApp.Domain.Services;
 using Common.Models.Responses;
 using MediatR;
 
@@ -9,21 +9,21 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, ApiResponse>
 {
     #region Fields, Properties
 
-    private readonly IIdentityRepository _identityRepository;
+    private readonly IIdentityService _identityService;
 
     #endregion
 
     #region Ctors
 
-    public LoginCommandHandler(IIdentityRepository identityRepository)
+    public LoginCommandHandler(IIdentityService identityService)
     {
-        _identityRepository = identityRepository;
+        _identityService = identityService;
     }
 
     #endregion
 
     public async Task<ApiResponse> Handle(LoginCommand command, CancellationToken cancellationToken)
     {
-        return await _identityRepository.LoginAsync(command.request, cancellationToken);
+        return await _identityService.LoginAsync(command.request, cancellationToken);
     }
 }

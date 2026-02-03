@@ -12,7 +12,7 @@ public sealed class JwtOptions
 
     public string ValidIssuer { get; set; } = default!;
 
-    public int RefreshTokenExpireDays { get; set; } = default!;
+    public int AccessTokenExpirationMinutes { get; set; } = default!;
 
     #endregion
 }

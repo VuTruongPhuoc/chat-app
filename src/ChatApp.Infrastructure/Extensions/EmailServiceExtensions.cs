@@ -1,4 +1,4 @@
-using ChatApp.Application.Services;
+using ChatApp.Application.Common.Interfaces;
 using ChatApp.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,5 +1,8 @@
+using ChatApp.Application.Common.Interfaces;
 using ChatApp.Domain.Repositories;
+using ChatApp.Domain.Services;
 using ChatApp.Infrastructure.Repositories;
+using ChatApp.Infrastructure.Services;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ChatApp.Infrastructure.Extensions;
@@ -13,7 +16,8 @@ public static class RepositoryServiceExtensions
         // Add Repositories
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IIdentityRepository, IdentityRepository>();
+        services.AddScoped<IIdentityService, IdentityService>();
+        services.AddScoped<ITokenService, TokenService>();
 
         return services;
     }

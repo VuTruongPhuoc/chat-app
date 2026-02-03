@@ -1,5 +1,5 @@
 using ChatApp.Application.Features.Auths.Commands;
-using ChatApp.Domain.Repositories;
+using ChatApp.Domain.Services;
 using Common.Models.Responses;
 using MediatR;
 
@@ -9,21 +9,21 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ApiRespon
 {
     #region Fields, Properties
 
-    private readonly IIdentityRepository _identityRepository;
+    private readonly IIdentityService _identityService;
 
     #endregion
 
     #region Ctors
 
-    public RegisterCommandHandler(IIdentityRepository identityRepository)
+    public RegisterCommandHandler(IIdentityService identityService)
     {
-        _identityRepository = identityRepository;
+        _identityService = identityService;
     }
 
     #endregion
 
     public async Task<ApiResponse> Handle(RegisterCommand command, CancellationToken cancellationToken)
     {
-        return await _identityRepository.RegisterAsync(command.request, cancellationToken);
+        return await _identityService.RegisterAsync(command.request, cancellationToken);
     }
 }
