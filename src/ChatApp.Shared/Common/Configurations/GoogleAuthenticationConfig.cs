@@ -2,7 +2,7 @@ public class GoogleAuthenticationConfig
 {
     #region Fields, Properties
 
-    public const string Section = "Authentication:Google";
+    public const string Section = "AuthenticationSettings:Google";
 
     public const string Google = "Google";
 

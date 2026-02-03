@@ -8,7 +8,7 @@ public class Roles : IdentityRole<Guid>
     #region Fields, Properties
 
     /// <summary>
-    /// Quyền đối với roles
+    /// Quyền đối với servers
     /// </summary>
     public ServerPermissions Permissions { get; set; } = default!;
 

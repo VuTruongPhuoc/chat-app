@@ -12,6 +12,7 @@ public static class OptionsServiceExtension
     {
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.Section));
         services.Configure<EmailOptions>(configuration.GetSection(EmailOptions.Section));
+        services.Configure<FrontEndOptions>(configuration.GetSection(FrontEndOptions.Section));
     
         return services;
     }

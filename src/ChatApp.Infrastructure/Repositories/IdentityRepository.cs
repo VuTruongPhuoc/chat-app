@@ -5,6 +5,8 @@ using System.Security.Cryptography;
 using System.Text;
 using AutoMapper;
 using ChatApp.Application.Dtos.Auths.Requests;
+using ChatApp.Application.Dtos.Emails;
+using ChatApp.Application.Services;
 using ChatApp.Domain.Constants;
 using ChatApp.Domain.Entities;
 using ChatApp.Domain.Repositories;
@@ -28,7 +30,11 @@ public class IdentityRepository : IIdentityRepository
     
     private readonly IConfiguration _configuration;
 
-    private readonly IOptions<JwtOptions> _options;
+    private readonly IEmailService _emailService;
+
+    private readonly IOptions<JwtOptions> _jwtOptions;
+
+    private readonly IOptions<FrontEndOptions> _frontEndOptions;
 
     private readonly IMapper _mapper;
 
@@ -36,16 +42,20 @@ public class IdentityRepository : IIdentityRepository
 
     #region Ctors
 
-    public IdentityRepository(UserManager<Users> userManager, RoleManager<Roles> roleManager, IConfiguration configuration, IOptions<JwtOptions> options, IMapper mapper)
+    public IdentityRepository(UserManager<Users> userManager, RoleManager<Roles> roleManager, IConfiguration configuration, IOptions<JwtOptions> jwtOptions, IMapper mapper, IEmailService emailService, IOptions<FrontEndOptions> frontEndOptions)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _configuration = configuration;
-        _options = options;
+        _jwtOptions = jwtOptions;
         _mapper = mapper;
+        _emailService = emailService;
+        _frontEndOptions = frontEndOptions;
     }
 
     #endregion
+
+    #region Implementations
 
     public async Task<ApiResponse> LoginAsync(LoginRequest request, CancellationToken cancellationToken = default)
     {
@@ -53,11 +63,7 @@ public class IdentityRepository : IIdentityRepository
 
         if(user is null || !await _userManager.CheckPasswordAsync(user, request.PassWord))
         {
-            return new ApiResponse
-            {
-                IsSuccess = false,
-                StatusCode = HttpStatusCode.Unauthorized
-            };
+            return ApiResponse.Unauthorized();
         }
 
         var securityToken = await GenerateJwtSercurityTokenByUserAsync(user);
@@ -65,7 +71,7 @@ public class IdentityRepository : IIdentityRepository
 
         var refreshToken = this.GenerateRefreshToken();
         user.RefreshToken = refreshToken;
-        user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(1);
+        user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(_jwtOptions.Value.RefreshTokenExpireDays);
 
         await _userManager.UpdateAsync(user);
 
@@ -93,36 +99,93 @@ public class IdentityRepository : IIdentityRepository
                             ? MessageCode.UserNameAlreadyExists 
                             : MessageCode.EmailAlreadyExists;
 
-            return new ApiResponse
-            {
-                IsSuccess = false,
-                StatusCode = HttpStatusCode.BadRequest,
-                Message = message
-            };
+            return ApiResponse.BadRequest(message);
         }
 
         var user = _mapper.Map<Users>(request);
 
-        await _userManager.CreateAsync(user, request.PassWord);
+        var result = await _userManager.CreateAsync(user, request.PassWord);
+
+        if (!result.Succeeded) 
+        { 
+            return ApiResponse.BadRequest(string.Join(", ", result.Errors.Select(e => e.Description))); 
+        }
+
         await _userManager.AddToRoleAsync(user, RoleConstants.Member);
 
-        return new ApiResponse()
-        {
-            IsSuccess = true,
-            StatusCode = HttpStatusCode.Created,
-            Message = MessageCode.RegisterSuccess,
-        };
+        return ApiResponse.Success();
     }
+
+    public async Task<ApiResponse> ForgotPasswordAsync(string email, CancellationToken cancellationToken = default)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (user is null)
+        {
+            return ApiResponse.Success();
+        }
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+        var resetLink =
+            $"{_frontEndOptions.Value.BaseUrl}{_frontEndOptions.Value.ResetPasswordPath}" +
+            $"?email={Uri.EscapeDataString(email)}" +
+            $"&token={Uri.EscapeDataString(token)}";
+
+        var (subject, body) = EmailMessage.ResetPassword(resetLink);
+
+        var emailRequest = new EmailRequest
+        {
+            To = new List<string> { email },
+            Subject = subject,
+            Body = body,
+            IsBodyHtml = true,
+            UserId = user.Id
+        };
+
+        await _emailService.SendEmailAsync(emailRequest, cancellationToken);
+
+        return ApiResponse.Success();
+    }
+
+    public async Task<ApiResponse> ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default)
+    {
+        var user = await _userManager.FindByEmailAsync(request.Email);
+
+        if (user is null)
+        {
+            return ApiResponse.BadRequest(MessageCode.InvalidToken);
+        }
+
+        var result = await _userManager.ResetPasswordAsync(
+            user,
+            request.Token,
+            request.NewPassword
+        );
+
+        if (!result.Succeeded)
+        {
+            return ApiResponse.BadRequest(
+                string.Join(", ", result.Errors.Select(e => e.Description))
+            );
+        }
+
+        return ApiResponse.Success();
+    }
+
+    #endregion
+
+    #region Methods
 
     public JwtSecurityToken GenerateToken(List<Claim> claims)
     {
-        var authSigninKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_options.Value.Secret));
+        var authSigninKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtOptions.Value.Secret));
         var tokenHandler = new JwtSecurityTokenHandler();
 
         var tokenDescriptor = new SecurityTokenDescriptor()
         {
-            Issuer = _options.Value.ValidIssuer,
-            Audience = _options.Value.ValidAudience,
+            Issuer = _jwtOptions.Value.ValidIssuer,
+            Audience = _jwtOptions.Value.ValidAudience,
             Subject = new ClaimsIdentity(claims),
             Expires = DateTime.UtcNow.AddMinutes(30),
             SigningCredentials = new SigningCredentials(authSigninKey, SecurityAlgorithms.HmacSha256)
@@ -140,8 +203,6 @@ public class IdentityRepository : IIdentityRepository
             new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
             new Claim(nameof(Users.Id), user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
-            new Claim(nameof(Users.AvatarUrl), user.AvatarUrl ?? string.Empty),
-            new Claim(ClaimTypes.MobilePhone, user.PhoneNumber ?? string.Empty),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 
@@ -169,4 +230,6 @@ public class IdentityRepository : IIdentityRepository
 
         return Convert.ToBase64String(randomNumber);
     }
+
+    #endregion
 }

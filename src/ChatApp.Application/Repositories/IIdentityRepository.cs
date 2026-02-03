@@ -12,6 +12,10 @@ public interface IIdentityRepository
 
     Task<ApiResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default);
 
+    Task<ApiResponse> ForgotPasswordAsync(string Email, CancellationToken cancellationToken = default);
+    
+    Task<ApiResponse> ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default);
+
     Task<string> GenerateTokenByUser(Users user);
 
     #endregion
