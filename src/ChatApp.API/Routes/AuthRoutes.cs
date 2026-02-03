@@ -14,5 +14,9 @@ public sealed class AuthRoutes : ApiBaseRoute
 
     public const string GoogleLogin = $"/{ApiRoute}/{Base}/google-login";
 
+    public const string ForgotPassword = $"/{ApiRoute}/{Base}/forgot-password";
+
+    public const string ResetPassword = $"/{ApiRoute}/{Base}/reset-password";
+
     #endregion
 }

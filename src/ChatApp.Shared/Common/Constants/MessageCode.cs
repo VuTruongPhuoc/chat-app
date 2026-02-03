@@ -26,6 +26,8 @@ public sealed class MessageCode
 
     public const string InternalServerError = "INTERNAL_SERVER_ERROR";
 
+    public const string UserNotFound = "USER_NOT_FOUND";
+
     public const string UserNameIsRequired = "USERNAME_IS_REQUIRED";
 
     public const string EmailIsRequired = "EMAIL_IS_REQUIRED";

@@ -1,5 +1,4 @@
 using ChatApp.Application.Dtos.Auths.Requests;
-using ChatApp.Domain.Entities;
 using Common.Models.Responses;
 
 namespace ChatApp.Domain.Services;
@@ -12,7 +11,7 @@ public interface IIdentityService
 
     Task<ApiResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken = default);
 
-    Task<ApiResponse> ForgotPasswordAsync(string Email, CancellationToken cancellationToken = default);
+    Task<ApiResponse> ForgotPasswordAsync(string email, CancellationToken cancellationToken = default);
     
     Task<ApiResponse> ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default);
 

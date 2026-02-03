@@ -14,7 +14,8 @@ public static class DependencyInjection
                 .AddAuthenticationServices(configuration)
                 .AddOptionsServices(configuration)
                 .AddIdentityServices()
-                .AddRepositoryServices();
+                .AddRepositoryServices()
+                .AddEmailServices();
 
         return services;
     }

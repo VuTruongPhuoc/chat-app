@@ -1,7 +1,6 @@
 using ChatApp.Application.Common.Interfaces;
 using ChatApp.Application.Dtos.Auths.Responses;
 using ChatApp.Application.Features.Auths.Commands;
-using ChatApp.Domain.Services;
 using Google.Apis.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -42,7 +41,6 @@ public class GoogleLoginCommandHandler : IRequestHandler<GoogleLoginCommand, Goo
 
         var payload = await GoogleJsonWebSignature.ValidateAsync(command.request.tokenId, settings);
 
-        // 2. Kiểm tra/Tạo User
         var user = await _userManager.FindByEmailAsync(payload.Email);
         if (user == null)
         {
@@ -61,7 +59,6 @@ public class GoogleLoginCommandHandler : IRequestHandler<GoogleLoginCommand, Goo
 
         var roles = await _userManager.GetRolesAsync(user);
 
-        // 3. Tạo JWT nội bộ
         var (token, _) = _tokenService.GenerateAccessToken(user, roles);
 
         return new GoogleLoginResponse(token, user.Email!);   

@@ -8,8 +8,6 @@ public class ApiResponse
 
     public bool IsSuccess { get; set; }
     
-    public HttpStatusCode StatusCode { get; set; }
-    
     public string? Message { get; set; }
 
     #endregion
@@ -18,10 +16,9 @@ public class ApiResponse
     
     public ApiResponse() {}
 
-    public ApiResponse(bool isSuccess, HttpStatusCode statusCode, string? message = null)
+    public ApiResponse(bool isSuccess, string? message = null)
     {
         IsSuccess = isSuccess;
-        StatusCode = statusCode;
         Message = message;
     }
 
@@ -29,15 +26,22 @@ public class ApiResponse
 
     #region Methods
 
-    public static ApiResponse Success(string? message = null) => new(true, HttpStatusCode.OK, message);
+    public static ApiResponse Success(string? message = null) => new(true, message);
 
-    public static ApiResponse BadRequest(string? message = null) => new(false, HttpStatusCode.BadRequest, message);
-
-    public static ApiResponse Unauthorized(string? message = null) => new(false, HttpStatusCode.Unauthorized, message);
-
-    public static ApiResponse Forbidden(string? message = null) => new(false, HttpStatusCode.Forbidden, message);
-    
-    public static ApiResponse NotFound(string? message = null) => new(false, HttpStatusCode.NotFound, message);
+    public static ApiResponse Failure(string? message = null) => new(false, message);
 
     #endregion
+}
+
+public class ApiResponse<T> : ApiResponse
+{
+    #region Fields, Properties
+
+    public T? Data { get; set; }
+
+    #endregion
+
+    public static ApiResponse<T> Success(T data, string? message = null) 
+        => new() { IsSuccess = true, Data = data, Message = message };
+
 }

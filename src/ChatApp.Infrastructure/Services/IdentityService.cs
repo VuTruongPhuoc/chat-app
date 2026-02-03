@@ -65,7 +65,7 @@ public class IdentityService : IIdentityService
 
         if(user is null || !await _userManager.CheckPasswordAsync(user, request.PassWord))
         {
-            return ApiResponse.Unauthorized();
+            return ApiResponse.Failure(MessageCode.UserNotFound);
         }
 
         var roles = await _userManager.GetRolesAsync(user);
@@ -81,7 +81,6 @@ public class IdentityService : IIdentityService
         return new ApiLoginResponse<UserDto>
         {
             IsSuccess = true,
-            StatusCode = HttpStatusCode.OK,
             AccessToken = accessToken,
             Expiration = expiration,
             RefreshToken = refreshToken,
@@ -100,7 +99,7 @@ public class IdentityService : IIdentityService
                             ? MessageCode.UserNameAlreadyExists 
                             : MessageCode.EmailAlreadyExists;
 
-            return ApiResponse.BadRequest(message);
+            return ApiResponse.Failure(message);
         }
 
         var user = _mapper.Map<Users>(request);
@@ -109,7 +108,7 @@ public class IdentityService : IIdentityService
 
         if (!result.Succeeded) 
         { 
-            return ApiResponse.BadRequest(string.Join(", ", result.Errors.Select(e => e.Description))); 
+            return ApiResponse.Failure(string.Join(", ", result.Errors.Select(e => e.Description))); 
         }
 
         await _userManager.AddToRoleAsync(user, RoleConstants.Member);
@@ -123,7 +122,7 @@ public class IdentityService : IIdentityService
 
         if (user is null)
         {
-            return ApiResponse.Success();
+            return ApiResponse.Success(MessageCode.UserNotFound);
         }
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -155,7 +154,7 @@ public class IdentityService : IIdentityService
 
         if (user is null)
         {
-            return ApiResponse.BadRequest(MessageCode.InvalidToken);
+            return ApiResponse.Failure(MessageCode.InvalidToken);
         }
 
         var result = await _userManager.ResetPasswordAsync(
@@ -166,7 +165,7 @@ public class IdentityService : IIdentityService
 
         if (!result.Succeeded)
         {
-            return ApiResponse.BadRequest(
+            return ApiResponse.Failure(
                 string.Join(", ", result.Errors.Select(e => e.Description))
             );
         }
