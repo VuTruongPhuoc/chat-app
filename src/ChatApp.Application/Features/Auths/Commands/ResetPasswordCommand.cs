@@ -27,7 +27,12 @@ public sealed class ResetPasswordCommandValidator : AbstractValidator<ResetPassw
                 RuleFor(r => r.request.NewPassword)
                     .NotEmpty()
                     .WithMessage(MessageCode.PassWordIsRequired);
-
+                RuleFor(r => r.request.ConfirmNewPassword)
+                    .NotEmpty()
+                    .WithMessage(MessageCode.PassWordIsRequired);
+                RuleFor(r => r.request.ConfirmNewPassword)
+                    .Equal(x => x.request.NewPassword)
+                    .WithMessage(MessageCode.NewPasswordNotMatch);
             });
     }
 }

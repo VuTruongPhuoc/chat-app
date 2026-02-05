@@ -14,6 +14,8 @@ public sealed class MessageCode
 
     public const string DeleteSuccess = "DELETE_SUCCESS";
 
+    public const string WeHaveSentResetLink = "WE_HAVE_SENT_RESET_LINK";
+
     #endregion
 
     #region Error Codes
@@ -23,6 +25,10 @@ public sealed class MessageCode
     public const string NotFound = "NOT_FOUND";
 
     public const string InvalidToken = "INVALID_TOKEN";
+
+    public const string NewPasswordNotMatch = "NEW_PASSWORD_NOT_MATCH";
+
+    public const string ResetPasswordedSuccessfully = "RESET_PASSWORDED_SUCCESSFULLY";
 
     public const string InternalServerError = "INTERNAL_SERVER_ERROR";
 

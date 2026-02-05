@@ -117,7 +117,7 @@ public class IdentityService : IIdentityService
 
         if (user is null)
         {
-            return ApiResponse.Success(MessageCode.UserNotFound);
+            return ApiResponse.Success(MessageCode.WeHaveSentResetLink);
         }
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -140,7 +140,7 @@ public class IdentityService : IIdentityService
 
         await _emailService.SendEmailAsync(emailRequest, cancellationToken);
 
-        return ApiResponse.Success();
+        return ApiResponse.Success(MessageCode.WeHaveSentResetLink);
     }
 
     public async Task<ApiResponse> ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default)
@@ -165,7 +165,7 @@ public class IdentityService : IIdentityService
             );
         }
 
-        return ApiResponse.Success();
+        return ApiResponse.Success(MessageCode.ResetPasswordedSuccessfully);
     }
 
     public async Task<bool> EmailVerificationAsync(EmailVerificationRequest request, CancellationToken cancellationToken = default)

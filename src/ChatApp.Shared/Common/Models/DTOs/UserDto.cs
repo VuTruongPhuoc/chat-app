@@ -1,6 +1,6 @@
 namespace Common.Models.DTOs;
 
-public sealed class UserDto
+public class UserDto
 {
     #region Fields, Properties
 
@@ -17,15 +17,6 @@ public sealed class UserDto
     public bool EmailVerified { get; init; }
 
     public List<string>? Roles { get; init; }
-
-    #endregion
-
-    #region Methods
-
-    public bool HasRoles(string roleName)
-    {
-        return Roles != null && Roles.Any(role => role == roleName);
-    }
 
     #endregion
 }
