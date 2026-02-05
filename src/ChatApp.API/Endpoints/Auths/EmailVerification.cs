@@ -16,7 +16,7 @@ public sealed class EmailVerification : ICarterModule
             .WithName(nameof(EmailVerification))
             .Produces<ApiResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
-            .AllowAnonymous();
+            .RequireAuthorization();
     }
 
     private async Task<bool> HandleEmailVerificationAsync(

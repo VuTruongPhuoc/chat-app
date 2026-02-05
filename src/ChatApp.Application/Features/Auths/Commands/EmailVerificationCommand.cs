@@ -1,4 +1,5 @@
 using ChatApp.Application.Dtos.Auths.Requests;
+using ChatApp.Domain.Services;
 using Common.Constants;
 using Common.ValueObjects;
 using FluentValidation;
@@ -23,5 +24,13 @@ public sealed class EmailVerificationCommandValidator : AbstractValidator<EmailV
                     .EmailAddress()
                     .WithMessage(MessageCode.InvalidEmailFormat);
             });
+    }
+}
+
+public sealed class EmailVerificationCommandHandler(IIdentityService identityService) : IRequestHandler<EmailVerificationCommand, bool>
+{
+    public Task<bool> Handle(EmailVerificationCommand command, CancellationToken cancellationToken)
+    {
+        return identityService.EmailVerificationAsync(command.request, cancellationToken);
     }
 }

@@ -1,4 +1,5 @@
 using ChatApp.Application.Dtos.Auths.Requests;
+using ChatApp.Domain.Services;
 using Common.Constants;
 using Common.Models.Responses;
 using Common.ValueObjects;
@@ -36,3 +37,13 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 
     #endregion
 }
+
+public class RegisterCommandHandler(IIdentityService identityService) : IRequestHandler<RegisterCommand, ApiResponse>
+{
+
+    public async Task<ApiResponse> Handle(RegisterCommand command, CancellationToken cancellationToken)
+    {
+        return await identityService.RegisterAsync(command.request, cancellationToken);
+    }
+}
+

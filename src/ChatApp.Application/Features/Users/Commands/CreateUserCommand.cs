@@ -3,6 +3,7 @@ using Common.ValueObjects;
 using Common.Constants;
 using FluentValidation;
 using MediatR;
+using AutoMapper;
 
 namespace ChatApp.Application.Features.Users.Commands;
 
@@ -31,4 +32,14 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     }
 
     #endregion 
+}
+
+public class CreateUserCommandHandler(IUserRepository userRepository, IMapper mapper) : IRequestHandler<CreateUserCommand, Guid>
+{
+    public async Task<Guid> Handle(CreateUserCommand command, CancellationToken cancellationToken)
+    {
+        var user = mapper.Map<Domain.Entities.Users>(command.request);
+        
+        return await userRepository.RegisterUserAsync(user, cancellationToken);
+    }
 }

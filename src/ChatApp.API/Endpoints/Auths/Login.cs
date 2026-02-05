@@ -17,7 +17,8 @@ public sealed class Login : ICarterModule
         .WithName(nameof(Login))
         .Produces<ApiLoginResponse<UserDto>>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)
-        .ProducesProblem(StatusCodes.Status401Unauthorized);
+        .ProducesProblem(StatusCodes.Status401Unauthorized)
+        .AllowAnonymous();
     }
 
     private async Task<ApiResponse> HandleLoginAsync(

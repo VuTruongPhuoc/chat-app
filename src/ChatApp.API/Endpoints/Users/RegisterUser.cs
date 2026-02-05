@@ -15,7 +15,8 @@ public sealed class RegisterUser : ICarterModule
             .WithTags(UserRoutes.Tags)
             .WithName(nameof(RegisterUser))
             .Produces<ApiCreatedResponse<Guid>>(StatusCodes.Status201Created)
-            .ProducesProblem(StatusCodes.Status400BadRequest);
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .RequireAuthorization();
     }
 
     private async Task<ApiCreatedResponse<Guid>> HandleCreateUserAsync(

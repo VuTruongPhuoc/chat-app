@@ -1,5 +1,6 @@
 using ChatApp.Application.Dtos.Auths.Requests;
 using ChatApp.Application.Dtos.Auths.Responses;
+using ChatApp.Domain.Services;
 using Common.Constants;
 using Common.Models.Responses;
 using Common.ValueObjects;
@@ -34,5 +35,13 @@ public sealed class ResetPasswordCommandValidator : AbstractValidator<ResetPassw
                     .Equal(x => x.request.NewPassword)
                     .WithMessage(MessageCode.NewPasswordNotMatch);
             });
+    }
+}
+
+public sealed class ResetPasswordCommandHandler(IIdentityService identityService) : IRequestHandler<ResetPasswordCommand, ApiResponse>
+{
+    public Task<ApiResponse> Handle(ResetPasswordCommand command, CancellationToken cancellationToken)
+    {
+        return identityService.ResetPasswordAsync(command.request, cancellationToken);
     }
 }

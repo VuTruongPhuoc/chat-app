@@ -15,7 +15,8 @@ public sealed class Register : ICarterModule
             .WithTags(AuthRoutes.Tags)
             .WithName(nameof(Register))
             .Produces<ApiResponse>(StatusCodes.Status201Created)
-            .ProducesProblem(StatusCodes.Status400BadRequest);
+            .ProducesProblem(StatusCodes.Status400BadRequest)
+            .AllowAnonymous();
     }
 
     private async Task<ApiResponse> HandleRegisterAsync(
