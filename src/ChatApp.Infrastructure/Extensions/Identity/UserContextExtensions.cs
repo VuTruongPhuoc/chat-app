@@ -7,14 +7,10 @@ namespace ChatApp.Infrastructure.Extensions.Identity;
 
 public static class UserContextExtensions
 {
-    public static UserContext? GetCurrentUser(this IHttpContextAccessor httpContextAccessor)
+    public static UserContext GetCurrentUser(this IHttpContextAccessor httpContextAccessor)
     {
         var user = httpContextAccessor.HttpContext?.User;
 
-        if (user != null || user?.Identity?.IsAuthenticated == false)
-        {
-            return null;
-        }
         return new UserContext()
         {
             Id = user?.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty,

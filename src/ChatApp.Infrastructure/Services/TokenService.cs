@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using ChatApp.Application.Common.Interfaces;
 using ChatApp.Domain.Entities;
+using Common.Constants;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -22,7 +23,7 @@ public class TokenService(IOptions<JwtOptions> jwtOptions) : ITokenService
             new Claim(ClaimTypes.Name, user.UserName!),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Email, user.Email!),
-            new Claim("EmailVerified", user.EmailConfirmed.ToString().ToLower(), ClaimValueTypes.Boolean),
+            new Claim(ClaimTypesContants.EmailConfirmed, user.EmailConfirmed.ToString().ToLower(), ClaimValueTypes.Boolean),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
 

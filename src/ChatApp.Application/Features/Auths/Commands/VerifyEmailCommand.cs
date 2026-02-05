@@ -1,17 +1,18 @@
 using ChatApp.Application.Dtos.Auths.Requests;
 using ChatApp.Domain.Services;
 using Common.Constants;
+using Common.Models.Responses;
 using Common.ValueObjects;
 using FluentValidation;
 using MediatR;
 
 namespace ChatApp.Application.Features.Auths.Commands;
 
-public record EmailVerificationCommand(EmailVerificationRequest request, Actor actor) : IRequest<bool>;
+public record VerifyEmailCommand(VerifyEmailRequest request, Actor actor) : IRequest<ApiResponse<bool>>;
 
-public sealed class EmailVerificationCommandValidator : AbstractValidator<EmailVerificationCommand>
+public sealed class VerifyEmailCommandValidator : AbstractValidator<VerifyEmailCommand>
 {
-    public EmailVerificationCommandValidator()
+    public VerifyEmailCommandValidator()
     {
         RuleFor(r => r.request)
             .NotNull()
@@ -27,10 +28,10 @@ public sealed class EmailVerificationCommandValidator : AbstractValidator<EmailV
     }
 }
 
-public sealed class EmailVerificationCommandHandler(IIdentityService identityService) : IRequestHandler<EmailVerificationCommand, bool>
+public sealed class VerifyEmailCommandHandler(IIdentityService identityService) : IRequestHandler<VerifyEmailCommand, ApiResponse<bool>>
 {
-    public Task<bool> Handle(EmailVerificationCommand command, CancellationToken cancellationToken)
+    public Task<ApiResponse<bool>> Handle(VerifyEmailCommand command, CancellationToken cancellationToken)
     {
-        return identityService.EmailVerificationAsync(command.request, cancellationToken);
+        return identityService.VerifyEmailAsync(command.request, cancellationToken);
     }
 }

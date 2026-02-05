@@ -44,4 +44,6 @@ public class ApiResponse<T> : ApiResponse
     public static ApiResponse<T> Success(T data, string? message = null) 
         => new() { IsSuccess = true, Data = data, Message = message };
 
+    public static ApiResponse<T> Failure(T data, string? message = null) 
+        => new() { IsSuccess = false, Data = data, Message = message };
 }

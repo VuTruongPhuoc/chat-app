@@ -1,6 +1,6 @@
 namespace ChatApp.Application.Dtos.Auths.Requests;
 
-public sealed class EmailVerificationRequest
+public sealed class VerifyEmailRequest
 {
     #region Fields, Properties
 

@@ -122,22 +122,9 @@ public class IdentityService : IIdentityService
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-        var resetLink =
-            $"{_frontEndOptions.Value.BaseUrl}{_frontEndOptions.Value.ResetPasswordPath}" +
-            $"?email={Uri.EscapeDataString(email)}" +
-            $"&token={Uri.EscapeDataString(token)}";
-
+        var resetLink = FrontEndOptions.BuildLink(_frontEndOptions.Value.ResetPasswordPath, email, token);
         var (subject, body) = EmailMessage.ResetPassword(resetLink);
-
-        var emailRequest = new EmailRequest
-        {
-            To = new List<string> { email },
-            Subject = subject,
-            Body = body,
-            IsBodyHtml = true,
-            UserId = user.Id
-        };
-
+        var emailRequest = EmailRequest.Create(user, subject, body);
         await _emailService.SendEmailAsync(emailRequest, cancellationToken);
 
         return ApiResponse.Success(MessageCode.WeHaveSentResetLink);
@@ -168,19 +155,50 @@ public class IdentityService : IIdentityService
         return ApiResponse.Success(MessageCode.ResetPasswordedSuccessfully);
     }
 
-    public async Task<bool> EmailVerificationAsync(EmailVerificationRequest request, CancellationToken cancellationToken = default)
+    public async Task<ApiResponse<bool>> ResentVerificationEmailAsync(string email, CancellationToken cancellationToken = default)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (user is null)
+        {
+            return ApiResponse<bool>.Failure(false,MessageCode.UserNotFound);
+        }
+
+        if (user.EmailConfirmed)
+        {
+        return ApiResponse<bool>.Failure(false,MessageCode.EmailAlreadyConfirmed);
+        }
+
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+        var resetLink = FrontEndOptions.BuildLink(_frontEndOptions.Value.ResetPasswordPath, email, token);
+        var (subject, body) = EmailMessage.EmailVerification(resetLink);
+        var emailRequest = EmailRequest.Create(user, subject, body);
+        await _emailService.SendEmailAsync(emailRequest, cancellationToken);
+
+        return ApiResponse<bool>.Success(true, MessageCode.WeHaveSentResetLink);
+    }
+
+    public async Task<ApiResponse<bool>> VerifyEmailAsync(VerifyEmailRequest request, CancellationToken cancellationToken = default)
     {
         var user = await _userManager.FindByEmailAsync(request.Email);
 
         if (user is null)
         {
-            return false;
+            return ApiResponse<bool>.Failure(false, MessageCode.UserNotFound);
         }
 
-        await _userManager.ConfirmEmailAsync(user, request.Token);
+        var result = await _userManager.ConfirmEmailAsync(user, request.Token);
 
-        return user?.EmailConfirmed ?? false;
+        if (!result.Succeeded)
+        {
+            var error = result.Errors.FirstOrDefault()?.Description ?? MessageCode.InvalidToken;
+            return ApiResponse<bool>.Failure(false, error);
+        }
+
+        return ApiResponse<bool>.Success(true, MessageCode.EmailConfirmedSuccessfully);
     }
 
     #endregion
 }
+

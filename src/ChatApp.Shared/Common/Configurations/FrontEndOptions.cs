@@ -6,9 +6,18 @@ public sealed class FrontEndOptions
 
     public const string Section = "FrontEndSettings";
 
-    public string BaseUrl = "BaseUrl";
+    public static string BaseUrl = "BaseUrl";
 
     public string ResetPasswordPath = "ResetPasswordPath";
 
+    public string ResentVerificationEmailPath = "ResentVerificationEmailPath";
+
+    #endregion
+
+    #region Methods
+
+    public static string BuildLink(string path, string email, string token)
+        => $"{BaseUrl}{path}?email={Uri.EscapeDataString(email)}&token={Uri.EscapeDataString(token)}";
+    
     #endregion
 }

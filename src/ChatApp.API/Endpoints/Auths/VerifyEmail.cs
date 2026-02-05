@@ -7,24 +7,24 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ChatApp.Api.Endpoints.Auths;
 
-public sealed class EmailVerification : ICarterModule
+public sealed class VerifyEmail : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPost(AuthRoutes.EmailVerification, HandleEmailVerificationAsync)
+        app.MapPost(AuthRoutes.VerifyEmail, HandleEmailVerificationAsync)
             .WithTags(AuthRoutes.Tags)
-            .WithName(nameof(EmailVerification))
+            .WithName(nameof(VerifyEmail))
             .Produces<ApiResponse>(StatusCodes.Status200OK)
             .ProducesProblem(StatusCodes.Status400BadRequest)
             .RequireAuthorization();
     }
 
-    private async Task<bool> HandleEmailVerificationAsync(
+    private async Task<ApiResponse<bool>> HandleEmailVerificationAsync(
         ISender sender,
-        [FromBody] EmailVerificationRequest request,
+        [FromBody] VerifyEmailRequest request,
         CancellationToken cancellationToken)
     {
-        var command = new EmailVerificationCommand(request, Actor.User(Modules.User));
+        var command = new VerifyEmailCommand(request, Actor.User(Modules.User));
         var response = await sender.Send(command, cancellationToken);
                     
         return response;

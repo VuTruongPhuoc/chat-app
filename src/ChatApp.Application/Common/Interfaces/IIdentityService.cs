@@ -15,7 +15,9 @@ public interface IIdentityService
     
     Task<ApiResponse> ResetPasswordAsync(ResetPasswordRequest request, CancellationToken cancellationToken = default);
 
-    Task<bool> EmailVerificationAsync(EmailVerificationRequest request, CancellationToken cancellationToken = default);
+    Task<ApiResponse<bool>> ResentVerificationEmailAsync(string email, CancellationToken cancellationToken = default);
+
+    Task<ApiResponse<bool>> VerifyEmailAsync(VerifyEmailRequest request, CancellationToken cancellationToken = default);
 
     #endregion
 }

@@ -17,4 +17,19 @@ public sealed class EmailRequest
     public bool IsBodyHtml { get; set; } = false;
 
     #endregion
+
+    #region Methods
+
+    public static EmailRequest Create(Domain.Entities.Users user, string subject, string body)
+        => new EmailRequest
+        {
+            To = [user.Email!],
+            Subject = subject,
+            Body = body,
+            IsBodyHtml = true,
+            UserId = user.Id
+        }; 
+    
+
+    #endregion
 }

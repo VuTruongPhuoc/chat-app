@@ -16,6 +16,8 @@ public sealed class MessageCode
 
     public const string WeHaveSentResetLink = "WE_HAVE_SENT_RESET_LINK";
 
+    public const string EmailConfirmedSuccessfully = "EMAIL_CONFIRMED_SUCCESSFULLY";
+
     #endregion
 
     #region Error Codes
@@ -25,6 +27,8 @@ public sealed class MessageCode
     public const string NotFound = "NOT_FOUND";
 
     public const string InvalidToken = "INVALID_TOKEN";
+
+    public const string EmailAlreadyConfirmed = "EMAIL_ALREADY_CONFIRMED";
 
     public const string NewPasswordNotMatch = "NEW_PASSWORD_NOT_MATCH";
 
