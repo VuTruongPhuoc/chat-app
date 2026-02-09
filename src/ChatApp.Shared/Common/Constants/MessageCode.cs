@@ -54,5 +54,9 @@ public sealed class MessageCode
 
     public const string RoomNotFound = "ROOM_NOT_FOUND";
 
+    public const string ServerNameIsRequired = "SERVER_NAME_IS_REQUIRED";
+
+    public const string ServerNotFound = "SERVER_NOT_FOUND"; 
+
     #endregion
 }

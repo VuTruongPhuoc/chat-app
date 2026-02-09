@@ -19,6 +19,7 @@ public static class RepositoryServiceExtensions
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IRoomRepository, RoomRepository>();
+        services.AddScoped<IServerRepository, ServerRepository>();
 
         return services;
     }

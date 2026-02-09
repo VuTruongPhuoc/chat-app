@@ -1,16 +1,16 @@
 namespace ChatApp.Api.Routes;
 
-public sealed class RoomRoutes : ApiBaseRoute
+public sealed class ServerRoutes : ApiBaseRoute
 {
     #region Fields, Properties
 
-    public const string Tags = "Rooms";
+    public const string Tags = "Servers";
 
-    public const string Base = "room";
+    public const string Base = "server";
 
     public const string GetAll = $"{ApiRoute}/{Base}/list";
 
-    public const string GetById = $"{ApiRoute}/{Base}/{{roomId}}";
+    public const string GetById = $"{ApiRoute}/{Base}/{{serverId}}";
 
     public const string Create = $"{ApiRoute}/{Base}/create";
 

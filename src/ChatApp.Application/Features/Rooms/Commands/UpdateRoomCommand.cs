@@ -34,18 +34,18 @@ public sealed class UpdateRoomCommandValidator : AbstractValidator<UpdateRoomCom
 
 public class UpdateRoomCommandHandler(IRoomRepository roomRepository, IMapper mapper) : IRequestHandler<UpdateRoomCommand, Guid>
 {
-    public async Task<Guid> Handle(UpdateRoomCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(UpdateRoomCommand command, CancellationToken cancellationToken)
     {
-        var existingRoom = await roomRepository.GetByIdAsync(request.Id, cancellationToken);       
+        var existingRoom = await roomRepository.GetByIdAsync(command.Id, cancellationToken);       
     
         if (existingRoom == null)
         {
             throw new ArgumentException(MessageCode.RoomNotFound);
         }
 
-        var updatedRoom = mapper.Map(request.request, existingRoom);
+        var updatedRoom = mapper.Map(command.request, existingRoom);
         updatedRoom.UpdatedAt = DateTime.UtcNow;
-        updatedRoom.UpdatedBy = request.actor.ToString();
+        updatedRoom.UpdatedBy = command.actor.ToString();
         roomRepository.Update(updatedRoom);
         
         return updatedRoom.Id;
