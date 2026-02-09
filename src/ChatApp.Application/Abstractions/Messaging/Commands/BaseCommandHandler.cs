@@ -1,5 +1,6 @@
 using AutoMapper;
 using BuildingBlocks.CQRS;
+using ChatApp.Application.Dtos.Abstractions;
 using ChatApp.Domain.Repositories;
 
 namespace ChatApp.Application.Abstractions.Messaging.Commands;

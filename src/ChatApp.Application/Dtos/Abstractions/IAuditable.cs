@@ -1,3 +1,5 @@
+namespace ChatApp.Application.Dtos.Abstractions;
+
 public interface IAuditable : ICreateAuditable, IUpdateAuditable
 {
 }

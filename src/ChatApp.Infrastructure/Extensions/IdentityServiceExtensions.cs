@@ -1,7 +1,6 @@
 using ChatApp.Domain.Entities;
 using ChatApp.Infrastructure.DbContext;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ChatApp.Infrastructure.Extensions;

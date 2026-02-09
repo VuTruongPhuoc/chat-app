@@ -50,5 +50,9 @@ public sealed class MessageCode
 
     public const string EmailAlreadyExists = "EMAIL_ALREADY_EXISTS";
 
+    public const string RoomNameIsRequired = "ROOM_NAME_IS_REQUIRED";
+
+    public const string RoomNotFound = "ROOM_NOT_FOUND";
+
     #endregion
 }

@@ -1,3 +1,5 @@
+namespace ChatApp.Application.Dtos.Abstractions;
+
 public abstract class EntityDto<T> : IEntityId<T>, IAuditable
 {
     #region Fields, Properties

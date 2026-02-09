@@ -21,11 +21,11 @@ public sealed class ResentVerificationEmail : ICarterModule
     private async Task<ApiResponse> HandleResentVerificationEmailAsync(
         ISender sender,
         [FromBody] string email,
-        IHttpContextAccessor httpContextAccessor,
+        [FromServices] IHttpContextAccessor httpContextAccessor,
         CancellationToken cancellationToken)
     {
         var currentUser = httpContextAccessor.GetCurrentUser();
-        var command = new ResentVerificationEmailCommand(email, Actor.User(currentUser.Id));
+        var command = new ResentVerificationEmailCommand(email, Actor.User(currentUser.Email));
         var response = await sender.Send(command, cancellationToken);
                     
         return response;

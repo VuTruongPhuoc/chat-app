@@ -1,3 +1,5 @@
+namespace ChatApp.Application.Dtos.Abstractions;
+
 public abstract class Auditable : IAuditable
 {
     #region Fields, Properties

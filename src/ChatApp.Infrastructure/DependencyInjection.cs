@@ -15,7 +15,9 @@ public static class DependencyInjection
                 .AddOptionsServices(configuration)
                 .AddIdentityServices()
                 .AddRepositoryServices()
-                .AddEmailServices();
+                .AddEmailServices()
+                // Add Http Context Accessor
+                .AddHttpContextAccessor();
 
         return services;
     }
