@@ -6,7 +6,7 @@ public sealed class ServerRoutes : ApiBaseRoute
 
     public const string Tags = "Servers";
 
-    public const string Base = "server";
+    public const string Base = "servers";
 
     public const string GetAll = $"{ApiRoute}/{Base}/list";
 
@@ -14,9 +14,9 @@ public sealed class ServerRoutes : ApiBaseRoute
 
     public const string Create = $"{ApiRoute}/{Base}/create";
 
-    public const string Update = $"{ApiRoute}/{Base}/update";
+    public const string Update = $"{ApiRoute}/{Base}/{{serverId}}";
 
-    public const string Delete = $"{ApiRoute}/{Base}/delete";
+    public const string Delete = $"{ApiRoute}/{Base}/{{serverId}}";
 
     #endregion
 }

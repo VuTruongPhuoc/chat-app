@@ -1,9 +1,6 @@
 using Common.ValueObjects;
-using Common.Constants;
 using Microsoft.AspNetCore.Mvc;
 using ChatApp.Api.Routes;
-using ChatApp.Application.Features.Auths.Commands;
-using ChatApp.Application.Dtos.Auths.Requests;
 using ChatApp.Application.Features.Rooms.Commands;
 using ChatApp.Application.Dtos.Rooms.Requests;
 using ChatApp.Infrastructure.Extensions.Identity;

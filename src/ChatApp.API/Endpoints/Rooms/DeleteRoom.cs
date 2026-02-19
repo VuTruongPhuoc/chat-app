@@ -1,5 +1,4 @@
 using Common.ValueObjects;
-using Common.Constants;
 using Microsoft.AspNetCore.Mvc;
 using ChatApp.Api.Routes;
 using ChatApp.Application.Features.Rooms.Commands;

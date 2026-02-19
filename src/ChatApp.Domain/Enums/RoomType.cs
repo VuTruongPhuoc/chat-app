@@ -1,5 +1,3 @@
-using System.ComponentModel;
-
 namespace ChatApp.Domain.Enums;
 
 public enum RoomType
